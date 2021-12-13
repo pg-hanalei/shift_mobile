@@ -34,19 +34,19 @@ export const Calender = memo((props) => {
             {/* ここから一周ずつ回すには？ */}
             {row.map((row, i) =>{
                 return(
-                    <tr>
+                    <tr key={i}>
                         {
                             week.map((week, j)=>{
                                 if (i === 0 && j < startDayOfWeek) {
                                     // 1行目で1日まで先月の日付を設定
                                     return(
-                                        <td class='disabled mark'>{lastMonthEndDate - startDayOfWeek + j + 1}</td>
+                                        <td key={j} className='disabled mark'>{lastMonthEndDate - startDayOfWeek + j + 1}</td>
                                     )
                                 } else if (count >= endDate) {
                                     // 最終行で最終日以降、翌月の日付を設定
                                     count++;
                                     return(
-                                        <td class='disable'>{count - endDate}</td>
+                                        <td key={j} className='disable'>{count - endDate}</td>
                                     );
                                 } else {
                                     // 当月の日付を曜日に照らし合わせて設定
@@ -55,12 +55,12 @@ export const Calender = memo((props) => {
                                       && month === (today.getMonth())
                                       && count === today.getDate()){
                                           return(
-                                            <td class='today'>{count}</td>
+                                            <td key={j} className='today'>{count}</td>
                                           );
                                         
                                     } else {
                                         return(
-                                            <td>{count}</td>
+                                            <td key={j}>{count}</td>
                                         )
 
                                     }
