@@ -2,21 +2,29 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useModal } from 'react-hooks-use-modal';
 import { Calender } from './components/molecules/Calender';
 
-import './reset.css';
-import './App.css';
+
 
 function App() {
 
-  //Fri Dec 10 2021 11:22:12 GMT+0900
+  // Fri Dec 10 2021 11:22:12 GMT+0900
   const today = useMemo( ()=> new Date(),[]);
 
+  // ユーザー名
   const [userName, setUserName] = useState("");
-  //ヘッダー表示用
+
+  // ヘッダー表示用　2021年12月
   const [yearMonth, setYearMonth] = useState("")
+
+  // 今日の年
   const [year, setYear] = useState(new Date().getFullYear());
+
+  // 今日の月
   const [month, setMonth] = useState(new Date().getMonth());
+
+  // 今日の月の1日 // Fri Dec 1 2021 00:00:00 GMT+0900
   const [showDate, setShowDate] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
 
+  // 入力用モーダル
   const [Modal, open, close] = useModal('root', {
     preventScroll: false, 
   });
@@ -31,11 +39,14 @@ function App() {
 
   },[today])
 
+
   // 年月表示
   useEffect(()=>{
+
     const year = showDate.getFullYear()
     const month = showDate.getMonth();
-    // ヘッダー部分に年月を表示させる
+
+    // ヘッダー部分に年月を表示させる new Dateのmonthは1月=0 の為　+1の調整が必要
     setYearMonth(`${year}年${month +1}月`);
 
     setYear(year);
@@ -43,11 +54,12 @@ function App() {
 
   },[showDate])
 
-
+  // 月 マイナス1
   const onClickPrev = useCallback(() => {
     setShowDate((prev) => new Date(prev.getFullYear(), prev.getMonth()-1, 1));
   },[]);
 
+  // 月 プラス1
   const onClickNext = useCallback(() => {
     setShowDate((prev) => new Date(prev.getFullYear(), prev.getMonth()+1, 1));
   },[]);
