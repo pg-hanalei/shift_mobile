@@ -56,18 +56,18 @@ td.today {
 }
 #next-prev-button button{
     cursor: pointer;
-    background: #B78D4A;
+    background: #007bff;
     color: #fff;
     font-weight: 900;
-    border: 1px solid #B78D4A;
+    border: 1px solid #007bff;
     border-radius: 4px;
     font-size: 1rem;
     padding: 0.5rem 2rem;
     margin: 1rem 0;
 }
 #next-prev-button button:hover{
-    background-color: #D4BB92;
-    border-color: #D4BB92;
+    background-color: #0069d9;
+    border-color: #0069d9;
 }
 #prev {
     float: left;

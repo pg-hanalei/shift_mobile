@@ -1,6 +1,10 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 export const Login = () => {
+
+    const history = useHistory();
+
     const form = {
         width: "100%",
         maxWidth: "420px",
@@ -11,27 +15,25 @@ export const Login = () => {
         <>
             <form className="form-signin" style={form}>
                 <div className="text-center mb-4">
-                    <h1 className="h3 mb-3 font-weight-normal">Floating labels</h1>
-                    <p>Build form controls with floating labels via the <code>:placeholder-shown</code> pseudo-element. <a href="https://caniuse.com/#feat=css-placeholder-shown">Works in latest Chrome, Safari, and Firefox.</a></p>
+                    <h1 className="h3 mb-3 font-weight-normal">シフト　希望申請</h1>
                 </div>
 
                 <div className="form-label-group">
-                    <input type="text" id="inputEmail" className="form-control" placeholder="Email address" required autofocus />
-                    <label for="inputEmail">Email address</label>
+                    <label htmlFor="inputName">ユーザー名</label>
+                    <input type="text" id="inputName" className="form-control" placeholder="ユーザー名を入力" required autoFocus />
+                    
                 </div>
 
                 <div className="form-label-group">
-                    <input type="password" id="inputPassword" className="form-control" placeholder="Password" required />
-                    <label for="inputPassword">Password</label>
+                    <label htmlFor="inputPassword">パスワード</label>
+                    <input type="password" id="inputPassword" className="form-control" placeholder="パスワードを入力" required />
+                    
                 </div>
 
-                <div className="checkbox mb-3">
-                    <label>
-                    <input type="checkbox" value="remember-me" /> Remember me
-                    </label>
+                <div className="form-label-group" style={{marginTop:"20px"}}>
+                     <button className="btn btn-lg btn-primary btn-block" onClick={()=>history.push('/calendar')}>Sign in</button>
                 </div>
-                <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                <p className="mt-5 mb-3 text-muted text-center">&copy; 2017-2018</p>
+                
             </form>
         </>
     );

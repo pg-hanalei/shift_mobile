@@ -11,7 +11,7 @@ export const Router = () => {
             <Route exact path="/">
                 <Login />
             </Route>
-            <Route path="/calender">
+            <Route path="/calendar">
                 <CalendarPage />
             </Route>
             <Route path="/shift_list">
