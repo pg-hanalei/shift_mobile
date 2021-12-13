@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 
 import { Login } from "../components/pages/Login"
 import { ShiftList } from '../components/pages/ShiftList';
-import { CalenderPage } from '../components/pages/CalenderPage';
+import { CalendarPage } from '../components/pages/CalendarPage';
 
 export const Router = () => {
     return(
@@ -12,7 +12,7 @@ export const Router = () => {
                 <Login />
             </Route>
             <Route path="/calender">
-                <CalenderPage />
+                <CalendarPage />
             </Route>
             <Route path="/shift_list">
                 <ShiftList />

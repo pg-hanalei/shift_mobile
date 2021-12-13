@@ -1,21 +1,26 @@
 import { useMemo, memo } from "react";
 
-export const Calender = memo((props) => {
-  const { year, month, today } = props;
+export const Calendar = memo((props) => {
+  const { year, month, today, open } = props;
 
   const week = useMemo(()=>{return (["日", "月", "火", "水", "木", "金", "土"])},[]);
   
     let count = 0;
     // getDay()で曜日を数値で返す
-    const startDayOfWeek = new Date(year, month + 1, 1).getDay();
+    const startDayOfWeek = new Date(year, month -1, 1).getDay();
 
     // 当月最終日を取得
     const endDate = new Date(year, month + 1, 0).getDate();
     // 先月の最終日
-    const lastMonthEndDate = new Date(year, month, 0).getDate();
+    const lastMonthEndDate = new Date(year, month -1, 0).getDate();
     // 水曜から始まるとして3（水）＋31（日間） /7 で当月が何週あるか確認 
     // const row = Math.ceil((startDayOfWeek + endDate) / week.length);
     const row = [1,2,3,4,5];
+
+    const onClickRegistryModal = (e) => {
+      console.log(`${year}年${month}月${e.currentTarget.getAttribute('data-day')}日`);
+      open();
+    }
 
   return (
     <>
@@ -52,7 +57,7 @@ export const Calender = memo((props) => {
                                     // 当月の日付を曜日に照らし合わせて設定
                                     count++;
                                     if(year === today.getFullYear()
-                                      && month === (today.getMonth())
+                                      && month === (today.getMonth() + 1)
                                       && count === today.getDate()){
                                           return(
                                             <td key={j} className='today'>{count}</td>
@@ -60,7 +65,7 @@ export const Calender = memo((props) => {
                                         
                                     } else {
                                         return(
-                                            <td key={j}>{count}</td>
+                                            <td key={j} data-day={count} onClick={onClickRegistryModal}>{count}</td>
                                         )
 
                                     }

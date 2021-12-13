@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useModal } from 'react-hooks-use-modal';
-import { Calender } from '../molecules/Calender'
+import { Calendar } from '../molecules/Calendar'
 
 import '../../reset.css';
 import '../../App.css';
 
-export const CalenderPage = () => {
+export const CalendarPage = () => {
    //Fri Dec 10 2021 11:22:12 GMT+0900
   const today = useMemo( ()=> new Date(),[]);
 
@@ -69,7 +69,7 @@ export const CalenderPage = () => {
           <button id="next" onClick={onClickNext}>&gt;</button>
       </div>
 
-      <Calender year={year} month={month +1} today={today} />
+      <Calendar year={year} month={month +1} today={today} open={open}/>
 
 
       <div className="" style={{textAlign: "center", marginTop: "40px"}}>
