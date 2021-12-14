@@ -24,13 +24,13 @@ export const Login = () => {
                     
                 </div>
 
-                <div className="form-label-group">
+                <div className="form-label-group" style={{marginTop: "20px"}}>
                     <label htmlFor="inputPassword">パスワード</label>
                     <input type="password" id="inputPassword" className="form-control" placeholder="パスワードを入力" required />
                     
                 </div>
 
-                <div className="form-label-group" style={{marginTop:"20px"}}>
+                <div className="form-label-group" style={{marginTop:"28px"}}>
                      <button className="btn btn-lg btn-primary btn-block" onClick={()=>history.push('/calendar')}>Sign in</button>
                 </div>
                 

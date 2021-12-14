@@ -60,6 +60,8 @@ export const CalendarPage = () => {
     backgroundColor: "#fff",
     padding: "20px 40px",
     borderRadius: "10px",
+    height: "380px",
+    width: "300px",
   };
 
   return (
@@ -69,7 +71,7 @@ export const CalendarPage = () => {
       <h1 id="header">{yearMonth}</h1>
 
       <div id="next-prev-button">
-        <button id="prev" className="btn btn-primary" onClick={onClickPrev}>
+        <button id="prev" className="btn btn-primary btn-sm" onClick={onClickPrev}>
           &lt;
         </button>
         <button id="next" className="btn btn-primary" onClick={onClickNext}>
@@ -98,7 +100,7 @@ export const CalendarPage = () => {
 
       <Modal>
         <div style={modalStyle}>
-          <h3>シフト希望申請</h3>
+   
           <h3>{`${year}年${month + 1}月${day}日`}</h3>
           <div>
             <input type="number" maxLength="2" max="23" min="8" />
@@ -115,26 +117,26 @@ export const CalendarPage = () => {
               <option>30</option>
             </select>
           </div>
-          <div style={{width:"100%", textAlign:"center"}}>
+          <div style={{width:"100%", textAlign:"center", marginTop:"40px"}}>
             <button
-              className="btn btn-primary"
-              style={{ marginTop: "8px", minWidth: "120px" }}
+              className="btn btn-primary btn-lg btn-block"
+              style={{ marginTop: "12px" }}
               onClick={close}
             >
               申請する
             </button>
             <br />
             <button
-              className="btn btn-danger"
-              style={{ marginTop: "8px", minWidth: "120px" }}
+              className="btn btn-danger btn-lg btn-block"
+              style={{ marginTop: "12px" }}
               onClick={close}
             >
               取り下げる
             </button>
             <br />
             <button
-              className="btn btn-secondary"
-              style={{ marginTop: "8px", minWidth: "120px" }}
+              className="btn btn-secondary btn-block"
+              style={{ marginTop: "12px" }}
               onClick={close}
             >
               CLOSE

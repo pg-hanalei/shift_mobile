@@ -49,7 +49,7 @@ export const Calendar = memo((props) => {
                     if (i === 0 && j < startDayOfWeek) {
                       // 1行目で1日まで先月の日付を設定
                       return (
-                        <td key={j} className="disabled mark">
+                        <td key={j} className="disabled marked">
                           {lastMonthEndDate - startDayOfWeek + j + 1}
                         </td>
                       );
@@ -57,7 +57,7 @@ export const Calendar = memo((props) => {
                       // 最終行で最終日以降、翌月の日付を設定
                       count++;
                       return (
-                        <td key={j} className="disable">
+                        <td key={j} className="disabled">
                           {count - endDate}
                         </td>
                       );
