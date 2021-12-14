@@ -23,6 +23,7 @@ export const CalendarPage = () => {
 
   const [Modal, open, close] = useModal("root", {
     preventScroll: false,
+    closeOnOverlayClick: false,
   });
 
   const history = useHistory();

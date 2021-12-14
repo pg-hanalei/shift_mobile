@@ -35,6 +35,7 @@ export const Login = () => {
                 </div>
                 
             </form>
+            <span>希望の申請であり、シフトを確定するものではありません</span>
         </div>
     );
 }

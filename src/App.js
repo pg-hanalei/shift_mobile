@@ -4,7 +4,7 @@ import { Router } from './route/Router';
 export const App = () => {
   return(
     <>
-      <BrowserRouter>
+      <BrowserRouter basename='/shift_mobile/'>
         <Router />
       </BrowserRouter>
     </>
