@@ -12,7 +12,7 @@ export const Login = () => {
         margin: "auto",
     }
     return(
-        <>
+        <div className="container">
             <form className="form-signin" style={form}>
                 <div className="text-center mb-4">
                     <h1 className="h3 mb-3 font-weight-normal">シフト　希望申請</h1>
@@ -35,6 +35,6 @@ export const Login = () => {
                 </div>
                 
             </form>
-        </>
+        </div>
     );
 }

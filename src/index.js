@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import {App} from './App';
 
 import './reset.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
+import './App.css';
 
 
 
