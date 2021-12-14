@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { PrimaryButton } from "../atoms/button/PrimaryButton";
 
 export const Login = () => {
 
@@ -13,7 +14,7 @@ export const Login = () => {
     }
     return(
         <div className="container">
-            <form className="form-signin" style={form}>
+            <form style={form}>
                 <div className="text-center mb-4">
                     <h1 className="h3 mb-3 font-weight-normal">シフト　希望申請</h1>
                 </div>
@@ -31,11 +32,11 @@ export const Login = () => {
                 </div>
 
                 <div className="form-label-group" style={{marginTop:"28px"}}>
-                     <button className="btn btn-lg btn-primary btn-block" onClick={()=>history.push('/calendar')}>Sign in</button>
+                    <PrimaryButton onClick={()=>history.push('/calendar')}>ログイン</PrimaryButton>
                 </div>
-                
+                <span style={{display:"block", marginTop:"12px"}}>希望の申請であり、シフトを確定するものではありません</span>
             </form>
-            <span>希望の申請であり、シフトを確定するものではありません</span>
+            
         </div>
     );
 }

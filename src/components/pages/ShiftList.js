@@ -1,48 +1,39 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { PrimaryButton } from "../atoms/button/PrimaryButton";
+import { SelectBoxYearMonth } from "../atoms/select/SelectBoxYearMonth";
 
 export const ShiftList = () => {
   const history = useHistory();
-
-  const marginTopBase = {
-    marginTop: "40px",
-  };
 
   return (
     <>
       <div className="container">
         <h3 id="user_info">テストさん</h3>
         <h5>申請内容一覧</h5>
-        <div style={marginTopBase}>
+        <div className="u-mt-40">
           <form>
             <div className="form-group">
               <label htmlFor="shiftListYear"></label>
-              <select
-                className="form-control form-control-lg"
-                style={{
-                  width: "160px",
-                  display: "inline-block",
-                  fontSize: "24px",
-                }}
+              <SelectBoxYearMonth
                 id="shiftListYear"
+                tani="年"
+                value={new Date().getFullYear()}
               >
-                <option>2020</option>
-                <option>2021</option>
-                <option>2022</option>
-              </select>
-              <span style={{ fontSize: "20px", paddingLeft: "8px" }}>年</span>
+                <option value={new Date().getFullYear() - 1}>
+                  {new Date().getFullYear() - 1}
+                </option>
+                <option value={new Date().getFullYear()}>
+                  {new Date().getFullYear()}
+                </option>
+                <option value={new Date().getFullYear() + 1}>
+                  {new Date().getFullYear() + 1}
+                </option>
+              </SelectBoxYearMonth>
             </div>
             <div className="form-group">
               <label htmlFor="shiftListMonth"></label>
-              <select
-                className="form-control form-control-lg"
-                style={{
-                  width: "160px",
-                  display: "inline-block",
-                  fontSize: "24px",
-                }}
-                id="shiftListMonth"
-              >
+              <SelectBoxYearMonth id="shiftListMonth" tani="月">
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -55,21 +46,21 @@ export const ShiftList = () => {
                 <option>10</option>
                 <option>11</option>
                 <option>12</option>
-              </select>
-              <span style={{ fontSize: "20px", paddingLeft: "8px" }}>月</span>
+              </SelectBoxYearMonth>
             </div>
-            <div style={{ width: "80%", textAlign: "center", margin: "40px auto 0px" }}>
-              <button
-                className="btn btn-primary btn-block"
-                style={{ minWidth: "120px", maxWidth:"100%", padding: "12px" }}
-                onClick={() => history.push("/calendar")}
-              >
-            検索
-          </button>
-        </div>
+            <div
+              style={{
+                textAlign: "center",
+                margin: "40px auto 0px",
+              }}
+            >
+              <PrimaryButton onClick={() => alert("下の表に出るようにする")}>
+                検索
+              </PrimaryButton>
+            </div>
           </form>
         </div>
-        <table className="table table-striped" style={marginTopBase}>
+        <table className="table table-striped u-mt-40">
           <thead>
             <tr>
               <th scope="col" style={{ width: "10%" }}>
@@ -109,14 +100,12 @@ export const ShiftList = () => {
             </tr>
           </tbody>
         </table>
-        <div style={{ width: "80%", textAlign: "center", margin: "40px auto 0px" }}>
-          <button
-            className="btn btn-primary btn-block"
-            style={{ minWidth: "120px", maxWidth:"100%", padding: "12px" }}
-            onClick={() => history.push("/calendar")}
-          >
-           カレンダー
-          </button>
+        <div
+          style={{ textAlign: "center", margin: "40px auto 0px" }}
+        >
+          <PrimaryButton onClick={() => history.push("/calendar")}>
+            カレンダー
+          </PrimaryButton>
         </div>
       </div>
     </>

@@ -1,12 +1,12 @@
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { Router } from './route/Router';
 
 export const App = () => {
   return(
     <>
-      <BrowserRouter basename='/shift_mobile/'>
+      <HashRouter basename='/shift_mobile/'>
         <Router />
-      </BrowserRouter>
+      </HashRouter>
     </>
   );
 }
