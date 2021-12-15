@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useModal } from "react-hooks-use-modal";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { ModalRegistry } from "../molecules/ModalRegistry";
 import { Calendar } from "../molecules/Calendar";
 import { NextPrevButton } from "../atoms/button/NextPrevButton";
@@ -12,7 +12,9 @@ export const CalendarPage = () => {
   const today = useMemo(() => new Date(), []);
 
   // ユーザー名
-  const [userName, setUserName] = useState("");
+  const location = useLocation();
+  
+  const [userName, setUserName] = useState(location.state.name);
 
   // ヘッダー表示用
   const [yearMonth, setYearMonth] = useState("");
@@ -38,7 +40,7 @@ export const CalendarPage = () => {
 
   // 初期表示
   useEffect(() => {
-    setUserName("テストさん");
+    // setUserName("テストさん");
 
     // 月末だとずれる可能性があるため、1日固定で取得  Wed Dec 01 2021 00:00:00 GMT+0900
     setShowDate(new Date(today.getFullYear(), today.getMonth(), 1));

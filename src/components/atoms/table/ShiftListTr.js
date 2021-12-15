@@ -12,6 +12,7 @@ export const ShiftListTr = memo((props) => {
     e.preventDefault();
     const day = e.currentTarget.getAttribute("data-day");
     const time = e.currentTarget.getAttribute("data-time");
+
     setDay(day);
     setTime(time)
     open();

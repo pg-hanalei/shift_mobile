@@ -10,7 +10,7 @@ export const ShiftList = () => {
 
   // モーダル表示用
   const [year, setYear] = useState(new Date().getFullYear());
-  const [month, setMonth] = useState(new Date().getMonth());
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [day, setDay] = useState("");
   const [time, setTime] = useState("");
 

@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
@@ -5,6 +6,30 @@ import { PrimaryButton } from "../atoms/button/PrimaryButton";
 export const Login = () => {
 
     const history = useHistory();
+
+    const onClickLogin = () => {
+
+        const data = {
+            empid: '000801',
+            password: '123456',
+        }
+
+        //TODO::ルートアドレスをenvファイルでとれるようにする？
+        axios.post('http://localhost:80/shift_request_api/login.php', data)
+        .then((res)=>{
+            console.log(res.data);
+
+            //最終問題無ければカレンダーページへ遷移
+            history.push({
+                pathname: '/calendar',
+                state: { name: res.data.name }
+            })
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+        
+    }
 
     const form = {
         width: "100%",
@@ -32,7 +57,7 @@ export const Login = () => {
                 </div>
 
                 <div className="form-label-group" style={{marginTop:"28px"}}>
-                    <PrimaryButton onClick={()=>history.push('/calendar')}>ログイン</PrimaryButton>
+                    <PrimaryButton onClick={onClickLogin}>ログイン</PrimaryButton>
                 </div>
                 <span style={{display:"block", marginTop:"12px"}}>希望の申請であり、シフトを確定するものではありません</span>
             </form>
