@@ -1,10 +1,33 @@
-import React from "react";
+import React, {useState} from "react";
+import { useModal } from "react-hooks-use-modal";
 import { useHistory } from "react-router-dom";
+import { ModalRegistry } from "../molecules/ModalRegistry";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
 import { SelectBoxYearMonth } from "../atoms/select/SelectBoxYearMonth";
+import { ShiftListTr } from "../atoms/table/ShiftListTr";
 
 export const ShiftList = () => {
+
+  // モーダル表示用
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [month, setMonth] = useState(new Date().getMonth());
+  const [day, setDay] = useState("");
+  const [time, setTime] = useState("");
+
+  // ページ遷移用API
   const history = useHistory();
+
+  // モーダル表示API
+  const [Modal, open, close] = useModal("root", {
+    preventScroll: false,
+    closeOnOverlayClick: false,
+  });
+
+  // 検索ボタンを押したら、テーブルを出すと共に、年月を格納する
+  const onClickShiftSearch = () => {
+    setYear(document.getElementById("shiftListYear").value);
+    setMonth(document.getElementById("shiftListMonth").value);
+  }
 
   return (
     <>
@@ -33,19 +56,23 @@ export const ShiftList = () => {
             </div>
             <div className="form-group">
               <label htmlFor="shiftListMonth"></label>
-              <SelectBoxYearMonth id="shiftListMonth" tani="月">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
-                <option>10</option>
-                <option>11</option>
-                <option>12</option>
+              <SelectBoxYearMonth 
+              id="shiftListMonth" 
+              tani="月"
+              value={new Date().getMonth() + 1}
+              >
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
               </SelectBoxYearMonth>
             </div>
             <div
@@ -54,13 +81,13 @@ export const ShiftList = () => {
                 margin: "40px auto 0px",
               }}
             >
-              <PrimaryButton onClick={() => alert("下の表に出るようにする")}>
+              <PrimaryButton onClick={onClickShiftSearch}>
                 検索
               </PrimaryButton>
             </div>
           </form>
         </div>
-        <table className="table table-striped u-mt-40">
+        <table className="table table-striped u-mt-40" style={{backgroundColor:"#fff", boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"}}>
           <thead>
             <tr>
               <th scope="col" style={{ width: "10%" }}>
@@ -71,33 +98,7 @@ export const ShiftList = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">12/1</th>
-              <td style={{ verticalAlign: "inherit", fontSize: "20px" }}>
-                8:00-12:00
-              </td>
-              <td>
-                <button className="btn btn-danger">編集</button>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">12/1</th>
-              <td style={{ verticalAlign: "inherit", fontSize: "20px" }}>
-                8:00-12:00
-              </td>
-              <td>
-                <button className="btn btn-danger">編集</button>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">12/1</th>
-              <td style={{ verticalAlign: "inherit", fontSize: "20px" }}>
-                8:00-12:00
-              </td>
-              <td>
-                <button className="btn btn-danger">編集</button>
-              </td>
-            </tr>
+            <ShiftListTr day="12/1" time="8:00-12:00" setDay={setDay} setTime={setTime} open={open}/>
           </tbody>
         </table>
         <div
@@ -108,6 +109,9 @@ export const ShiftList = () => {
           </PrimaryButton>
         </div>
       </div>
+      <Modal>
+        <ModalRegistry year={year} month={month} day={day} time={time} close={close} />
+      </Modal>
     </>
   );
 };

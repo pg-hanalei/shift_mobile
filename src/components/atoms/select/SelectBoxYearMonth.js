@@ -1,4 +1,6 @@
-export const SelectBoxYearMonth = ({ children, id = "", tani = "", value }) => {
+import {memo} from 'react';
+
+export const SelectBoxYearMonth = memo(({ children, id = "", tani = "", value }) => {
   const selectStyle = {
     width: "160px",
     display: "inline-block",
@@ -23,4 +25,4 @@ export const SelectBoxYearMonth = ({ children, id = "", tani = "", value }) => {
       <span style={taniStyle}>{tani}</span>
     </>
   );
-};
+});

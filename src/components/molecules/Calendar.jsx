@@ -21,7 +21,6 @@ export const Calendar = memo((props) => {
 
   const onClickRegistryModal = (e) => {
     const day = e.currentTarget.getAttribute("data-day");
-    console.log(`${year}年${month}月${day}日`);
     setDay(day);
     open();
   };
@@ -29,7 +28,7 @@ export const Calendar = memo((props) => {
   return (
     <>
       <div id="calendar">
-        <table className="table">
+        <table className="table" style={{boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"}}>
           <thead>
             <tr className="dayOfWeek">
               <th>日</th>

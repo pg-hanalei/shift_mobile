@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useModal } from "react-hooks-use-modal";
+import { useHistory } from "react-router-dom";
 import { ModalRegistry } from "../molecules/ModalRegistry";
 import { Calendar } from "../molecules/Calendar";
-import { useHistory } from "react-router-dom";
+import { NextPrevButton } from "../atoms/button/NextPrevButton";
+import { PrimaryButton } from "../atoms/button/PrimaryButton";
 
 export const CalendarPage = () => {
+
   // Fri Dec 10 2021 11:22:12 GMT+0900
   const today = useMemo(() => new Date(), []);
 
@@ -43,7 +46,6 @@ export const CalendarPage = () => {
 
   // 年月表示
   useEffect(() => {
-
     const year = showDate.getFullYear();
     const month = showDate.getMonth();
 
@@ -52,7 +54,6 @@ export const CalendarPage = () => {
 
     setYear(year);
     setMonth(month);
-
   }, [showDate]);
 
   // 前月ボタン
@@ -68,20 +69,25 @@ export const CalendarPage = () => {
   return (
     <div className="container">
       <h3 id="user_info">{userName}</h3>
+      <h1
+        id="header"
+        style={{
+          textAlign: "center",
+          fontSize: "24px",
+          width: "100%",
+          margin: "1rem 0 0",
+        }}
+      >
+        {yearMonth}
+      </h1>
 
-      <h1 id="header">{yearMonth}</h1>
-
-      <div id="next-prev-button">
-        <button
-          id="prev"
-          className="btn btn-primary btn-sm"
-          onClick={onClickPrev}
-        >
+      <div id="next-prev-button" style={{ position: "relative" }}>
+        <NextPrevButton onClick={onClickPrev} className={"u-float--left"}>
           &lt;
-        </button>
-        <button id="next" className="btn btn-primary" onClick={onClickNext}>
+        </NextPrevButton>
+        <NextPrevButton onClick={onClickNext} className={"u-float--right"}>
           &gt;
-        </button>
+        </NextPrevButton>
       </div>
 
       <Calendar
@@ -95,19 +101,11 @@ export const CalendarPage = () => {
       <div
         style={{ width: "80%", textAlign: "center", margin: "40px auto 0px" }}
       >
-        <button
-          className="btn btn-primary btn-block"
-          style={{ minWidth: "120px", maxWidth: "100%", padding: "12px" }}
-          onClick={() => history.push("/shift_list")}
-        >
-          申請内容　一覧
-        </button>
+        <PrimaryButton onClick={() => history.push("/shift_list")}>申請内容　一覧</PrimaryButton>
       </div>
 
       <Modal>
-        <ModalRegistry 
-          year={year} month={month} day={day} close={close}
-        />
+        <ModalRegistry year={year} month={month + 1} day={day} time={"9:30-14:00"} close={close} />
       </Modal>
     </div>
   );

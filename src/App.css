@@ -3,14 +3,9 @@
 /*全体*/
 
 body {
-    font-family:Verdana, Geneva, Tahoma, sans-serif
-}
-
-
-/*ユーティリティ*/
-
-.u-mt-40 {
-    margin-top: 40px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    color: #333;
+    line-height: 1.5;
 }
 
 .container {
@@ -18,27 +13,35 @@ body {
     padding-bottom: 60px;
 }
 
-#header {
-    text-align: center;
-    font-size: 24px;
-    width: 100%;
-    margin: 1rem 0 0;
+
+/*ユーティリティ*/
+
+.u-ml--8 {
+    margin-left: 8px;
 }
+
+.u-mt-40 {
+    margin-top: 40px;
+}
+
+
+.u-float--left {
+    float: left;
+}
+.u-float--right {
+    float: right;
+}
+
+
+
 
 /*カレンダー*/
 #calendar {
     text-align: center;
     width: 100%;
 }
-table {
-    outline: 1px solid #ddd;
-    border-collapse: collapse;
-    width: 100%;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-}
-th {
-    color: #000;
-}
+
+
 th, td {
   outline: 1px solid #ddd;
   padding-top: 10px;
@@ -46,50 +49,25 @@ th, td {
   text-align: center;
 }
 /*日曜日*/
-td:first-child {
+#calendar td:first-child {
     color: red;
 }
 /*土曜日*/
-td:last-child {
+#calendar td:last-child {
     color: blue;
 }
 /*前後月の日付*/
-td.disabled {
+#calendar td.disabled {
     color: #ccc;
 }
 /*本日*/
-td.today {
+#calendar td.today {
     background-color: #D65E72;
     color: #fff;
 }
 
-/*ボタン*/
-#next-prev-button {
-    position: relative;
-}
-#next-prev-button button{
-    cursor: pointer;
-    background: #007bff;
-    color: #fff;
-    font-weight: 900;
-    border: 1px solid #007bff;
-    border-radius: 4px;
-    font-size: 1rem;
-    padding: 0.2rem 1.5rem;
-    margin: 1rem 0;
-}
-#next-prev-button button:hover{
-    background-color: #0069d9;
-    border-color: #0069d9;
-}
-#prev {
-    float: left;
-}
-#next {
-    float: right;
-}
 
-td.marked::after {
+#calendar td.marked::after {
   display: block;
   margin: 0 auto;
   content: "";

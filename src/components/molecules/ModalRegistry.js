@@ -1,8 +1,9 @@
 import { memo } from "react";
+import { PrimaryButton } from "../atoms/button/PrimaryButton";
 
 export const ModalRegistry = memo((props) => {
   
-    const {year, month, day, close} = props;
+    const {year, month, day, time, close} = props;
   
     const modalStyle = {
         backgroundColor: "#fff",
@@ -27,7 +28,7 @@ export const ModalRegistry = memo((props) => {
 
   return (
     <div style={modalStyle}>
-      <h5>{`${year}年${month + 1}月${day}日`}</h5>
+      <h5>{`${year}年${month}月${day}日`}</h5>
 
       <form>
         <h6>開始</h6>
@@ -38,37 +39,39 @@ export const ModalRegistry = memo((props) => {
               className="form-control form-control-lg"
               style={selectStyle}
               id="registryStartHour"
+              defaultValue={time.split(':')[0]}
             >
-              <option>8</option>
-              <option>9</option>
-              <option>10</option>
-              <option>11</option>
-              <option>12</option>
-              <option>13</option>
-              <option>14</option>
-              <option>15</option>
-              <option>16</option>
-              <option>17</option>
-              <option>18</option>
-              <option>19</option>
-              <option>20</option>
-              <option>21</option>
-              <option>22</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="19">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
             </select>
             <span style={taniStyle}>時</span>
           </div>
 
-          <div className="form-group">
+          <div className="form-group u-ml--8">
             <label htmlFor="registryStartMinute"></label>
             <select
               className="form-control form-control-lg"
               style={selectStyle}
               id="registryStartMinute"
+              defaultValue={Number(time.split('-')[0].split(':')[1])}
             >
-              <option>00</option>
-              <option>30</option>
+              <option value="0">00</option>
+              <option value="30">30</option>
             </select>
-            <span style={taniStyle}>時</span>
+            <span style={taniStyle}>分</span>
           </div>
         </div>
 
@@ -80,64 +83,48 @@ export const ModalRegistry = memo((props) => {
               className="form-control form-control-lg"
               style={selectStyle}
               id="shiftListYear"
+              defaultValue={time.split('-')[1].split(':')[0]}
             >
-              <option>8</option>
-              <option>9</option>
-              <option>10</option>
-              <option>11</option>
-              <option>12</option>
-              <option>13</option>
-              <option>14</option>
-              <option>15</option>
-              <option>16</option>
-              <option>17</option>
-              <option>18</option>
-              <option>19</option>
-              <option>20</option>
-              <option>21</option>
-              <option>22</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="19">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
             </select>
             <span style={taniStyle}>時</span>
           </div>
 
-          <div className="form-group">
+          <div className="form-group u-ml--8">
             <label htmlFor="registryEndMinute"></label>
             <select
               className="form-control form-control-lg"
               style={selectStyle}
               id="registryEndMinute"
+              defaultValue={Number(time.split('-')[1].split(':')[1])}
             >
-              <option>00</option>
-              <option>30</option>
+              <option value="0">00</option>
+              <option value="30">30</option>
             </select>
-            <span style={taniStyle}>時</span>
+            <span style={taniStyle}>分</span>
           </div>
         </div>
 
         <div style={{ width: "100%", textAlign: "center", marginTop: "20px" }}>
-          <button
-            className="btn btn-primary btn-lg btn-block"
-            style={{ marginTop: "8px" }}
-            onClick={close}
-          >
-            申請する
-          </button>
+          <PrimaryButton onClick={close}>申請する</PrimaryButton>
           <br />
-          <button
-            className="btn btn-danger btn-lg btn-block"
-            style={{ marginTop: "8px" }}
-            onClick={close}
-          >
-            取り下げる
-          </button>
+          <PrimaryButton onClick={close} className={"btn-danger"}>取り下げる</PrimaryButton>
           <br />
-          <button
-            className="btn btn-secondary btn-block"
-            style={{ marginTop: "8px" }}
-            onClick={close}
-          >
-            CLOSE
-          </button>
+          <PrimaryButton onClick={close} className={"btn-secondary"}>閉じる</PrimaryButton>
         </div>
       </form>
     </div>
