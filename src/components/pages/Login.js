@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
 
@@ -7,7 +7,9 @@ export const Login = () => {
 
     const history = useHistory();
 
-    const onClickLogin = () => {
+    const onClickLogin = useCallback((e) => {
+        e.preventDefault();
+        e.stopPropagation();
 
         const data = {
             empid: '000801',
@@ -17,19 +19,24 @@ export const Login = () => {
         //TODO::ルートアドレスをenvファイルでとれるようにする？
         axios.post('http://localhost:80/shift_request_api/login.php', data)
         .then((res)=>{
-            console.log(res.data);
+            console.log(res.data.user.token);
+
+            //res.data.tokenを取得してcookieにhttponly属性で保持 ageは秒数 本番ではSecure も追加する（https対応）
+            const cookieString = `TOKEN=${res.data.user.token};Max-Age=300;Domain=localhost:80;`;
+            console.log(cookieString)
+            document.cookie = cookieString;
 
             //最終問題無ければカレンダーページへ遷移
-            history.push({
-                pathname: '/calendar',
-                state: { name: res.data.name }
-            })
+            // history.push({
+            //     pathname: '/calendar',
+            //     state: { name: res.data.name }
+            // })
         })
         .catch((err)=>{
             console.log(err);
         })
         
-    }
+    },[]);
 
     const form = {
         width: "100%",
