@@ -32,10 +32,6 @@ export const Calendar = memo((props) => {
 
   useEffect(()=>{
 
-
-    console.log(state.user.empid)
-    console.log(year);
-    console.log(month);
     //ここでシフトデータ取得？
     const data = {
       empid: state.user.empid,
@@ -83,7 +79,7 @@ export const Calendar = memo((props) => {
                     if (i === 0 && j < startDayOfWeek) {
                       // 1行目で1日まで先月の日付を設定
                       return (
-                        <td key={j} className="disabled marked">
+                        <td key={j} className="disabled">
                           {lastMonthEndDate - startDayOfWeek + j + 1}
                         </td>
                       );
@@ -98,6 +94,12 @@ export const Calendar = memo((props) => {
                     } else {
                       // 当月の日付を曜日に照らし合わせて設定
                       count++;
+
+                      const rst = state.shift.filter((data) => {
+                        return count == data.date.split("-")[2];
+                      })
+                      let mark = (rst != 0);
+
                       if (
                         year === today.getFullYear() &&
                         month === today.getMonth() + 1 &&
@@ -107,17 +109,19 @@ export const Calendar = memo((props) => {
                           <td
                             key={j}
                             data-day={count}
-                            className="today"
+                            className={`today ${mark && "marked"}`}
                             onClick={onClickRegistryModal}
                           >
                             {count}
                           </td>
                         );
                       } else {
+
                         return (
                           <td
                             key={j}
                             data-day={count}
+                            className={mark && "marked"}
                             onClick={onClickRegistryModal}
                           >
                             {count}
