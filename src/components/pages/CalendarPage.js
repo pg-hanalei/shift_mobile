@@ -9,7 +9,7 @@ import AppContext from '../../contexts/AppContext'
 
 export const CalendarPage = () => {
   
-  const { state, dispatch } = useContext(AppContext)
+  const { state } = useContext(AppContext)
 
   // Fri Dec 10 2021 11:22:12 GMT+0900
   const today = useMemo(() => new Date(), []);
@@ -38,8 +38,6 @@ export const CalendarPage = () => {
 
   // 初期表示
   useEffect(() => {
-
-    console.log(state.user);
 
     // 月末だとずれる可能性があるため、1日固定で取得  Wed Dec 01 2021 00:00:00 GMT+0900
     setShowDate(new Date(today.getFullYear(), today.getMonth(), 1));

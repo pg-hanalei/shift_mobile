@@ -1,4 +1,7 @@
-import { useMemo, memo } from "react";
+import { useMemo, memo, useEffect, useContext } from "react";
+import axios from "axios";
+import { FETCH_SHIFT } from "../../actions";
+import AppContext from "../../contexts/AppContext";
 
 export const Calendar = memo((props) => {
   const { year, month, setDay, today, open } = props;
@@ -24,6 +27,38 @@ export const Calendar = memo((props) => {
     setDay(day);
     open();
   };
+
+  const {state, dispatch} = useContext(AppContext);
+
+  useEffect(()=>{
+
+
+    console.log(state.user.empid)
+    console.log(year);
+    console.log(month);
+    //ここでシフトデータ取得？
+    const data = {
+      empid: state.user.empid,
+      year,
+      month,
+  }
+
+  //TODO::ルートアドレスをenvファイルでとれるようにする？
+  axios.post('http://localhost:80/shift_mobile/shift.php', data,{
+      withCredentials: true,
+    })
+  .then((res)=>{
+      console.log(res.data.shift);
+
+      dispatch({
+          type: FETCH_SHIFT,
+          data: res.data.shift
+      })
+  })
+  .catch((err)=>{
+      console.log(err);
+  })
+  },[year, month, dispatch, state.user.empid])
 
   return (
     <>

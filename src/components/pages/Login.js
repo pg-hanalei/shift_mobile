@@ -48,7 +48,7 @@ export const Login = () => {
             })
 
             //カレンダーページへ遷移
-            // history.push('/calendar');
+            history.push('/calendar');
         })
         .catch((err)=>{
             console.log(err);
