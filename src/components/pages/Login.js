@@ -1,43 +1,62 @@
 import axios from "axios";
-import React, { useCallback } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
+import { FETCH_USER } from "../../actions";
+import AppContext from "../../contexts/AppContext";
+import { InputText } from "../atoms/input/InputText";
 
 export const Login = () => {
 
+    const { dispatch } = useContext(AppContext);
+
     const history = useHistory();
 
+    const [ empid, setEmpid ] = useState("");
+    const [password, setPassword] = useState("");
+
+    const onChangeEmpid = (e)=>setEmpid(e.target.value);
+    const onChangePassword = (e)=>setPassword(e.target.value);
+
+
+    //ログインボタン
     const onClickLogin = useCallback((e) => {
+        //ボタンイベント無効
         e.preventDefault();
         e.stopPropagation();
 
         const data = {
-            empid: '000801',
-            password: '123456',
+            empid,
+            password,
         }
 
         //TODO::ルートアドレスをenvファイルでとれるようにする？
-        axios.post('http://localhost:80/shift_request_api/login.php', data)
+        axios.post('http://localhost:80/shift_mobile/login.php', data,{
+            withCredentials: true,
+          })
         .then((res)=>{
-            console.log(res.data.user.token);
+            // console.log(res.data.user);
 
-            //res.data.tokenを取得してcookieにhttponly属性で保持 ageは秒数 本番ではSecure も追加する（https対応）
-            const cookieString = `TOKEN=${res.data.user.token};Max-Age=300;Domain=localhost:80;`;
-            console.log(cookieString)
-            document.cookie = cookieString;
+            const {empid, emp_name, stoid, sto_name } = res.data.user;
 
-            //最終問題無ければカレンダーページへ遷移
-            // history.push({
-            //     pathname: '/calendar',
-            //     state: { name: res.data.name }
-            // })
+            dispatch({
+                type: FETCH_USER,
+                empid: empid,
+                empname: emp_name,
+                stoid,
+                stoname: sto_name
+            })
+
+            //カレンダーページへ遷移
+            // history.push('/calendar');
         })
         .catch((err)=>{
             console.log(err);
         })
         
-    },[]);
+    },[dispatch, history, empid, password]);
 
+    
     const form = {
         width: "100%",
         maxWidth: "420px",
@@ -52,15 +71,11 @@ export const Login = () => {
                 </div>
 
                 <div className="form-label-group">
-                    <label htmlFor="inputName">ユーザー名</label>
-                    <input type="text" id="inputName" className="form-control" placeholder="ユーザー名を入力" required autoFocus />
-                    
+                    <InputText id="inputName" placeholder="ユーザー名を入力" value={empid} onChange={onChangeEmpid}>社員番号</InputText>
                 </div>
 
                 <div className="form-label-group" style={{marginTop: "20px"}}>
-                    <label htmlFor="inputPassword">パスワード</label>
-                    <input type="password" id="inputPassword" className="form-control" placeholder="パスワードを入力" required />
-                    
+                    <InputText id="inputPassword" placeholder="パスワードを入力" value={password} onChange={onChangePassword}>パスワード</InputText>
                 </div>
 
                 <div className="form-label-group" style={{marginTop:"28px"}}>

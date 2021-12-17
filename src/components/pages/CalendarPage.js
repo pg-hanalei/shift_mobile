@@ -1,20 +1,18 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useContext } from "react";
 import { useModal } from "react-hooks-use-modal";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { ModalRegistry } from "../molecules/ModalRegistry";
 import { Calendar } from "../molecules/Calendar";
 import { NextPrevButton } from "../atoms/button/NextPrevButton";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
+import AppContext from '../../contexts/AppContext'
 
 export const CalendarPage = () => {
+  
+  const { state, dispatch } = useContext(AppContext)
 
   // Fri Dec 10 2021 11:22:12 GMT+0900
   const today = useMemo(() => new Date(), []);
-
-  // ユーザー名
-  const location = useLocation();
-  
-  const [userName, setUserName] = useState(location.state.name);
 
   // ヘッダー表示用
   const [yearMonth, setYearMonth] = useState("");
@@ -40,7 +38,8 @@ export const CalendarPage = () => {
 
   // 初期表示
   useEffect(() => {
-    // setUserName("テストさん");
+
+    console.log(state.user);
 
     // 月末だとずれる可能性があるため、1日固定で取得  Wed Dec 01 2021 00:00:00 GMT+0900
     setShowDate(new Date(today.getFullYear(), today.getMonth(), 1));
@@ -70,7 +69,8 @@ export const CalendarPage = () => {
 
   return (
     <div className="container">
-      <h3 id="user_info">{userName}</h3>
+      <h3 id="">{state.user.empname}</h3>
+      <h5 id="">{state.user.stoname}</h5>
       <h1
         id="header"
         style={{
