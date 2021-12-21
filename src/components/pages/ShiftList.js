@@ -1,18 +1,34 @@
-import React, {useState} from "react";
+import React, { useCallback, useEffect, useState, useContext } from "react";
+import axios from "axios";
+
+import AppContext from "../../contexts/AppContext";
+import { FETCH_SHIFT } from "../../actions";
+
 import { useModal } from "react-hooks-use-modal";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { ModalRegistry } from "../molecules/ModalRegistry";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
 import { SelectBoxYearMonth } from "../atoms/select/SelectBoxYearMonth";
 import { ShiftListTr } from "../atoms/table/ShiftListTr";
 
+
 export const ShiftList = () => {
 
+  // カレンダーから渡された値を受け取るAPI
+  const location = useLocation();
+
+  // グローバル変数を扱うAPI
+  const {state, dispatch} = useContext(AppContext);
+
   // モーダル表示用
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [year, setYear] = useState(location.state.year);
+  const [month, setMonth] = useState(location.state.month + 1);
   const [day, setDay] = useState("");
   const [time, setTime] = useState("");
+
+  // シフト一覧表示用
+  const [shiftData, setShiftData] = useState([]);
+
 
   // ページ遷移用API
   const history = useHistory();
@@ -24,10 +40,64 @@ export const ShiftList = () => {
   });
 
   // 検索ボタンを押したら、テーブルを出すと共に、年月を格納する
-  const onClickShiftSearch = () => {
-    setYear(document.getElementById("shiftListYear").value);
-    setMonth(document.getElementById("shiftListMonth").value);
+  const onClickShiftSearch = useCallback((e) => {
+    e.preventDefault();
+
+    console.log("select")
+    console.log(document.getElementById("shiftListYear").value)
+    console.log(document.getElementById("shiftListMonth").value)
+
+    // セレクトボックスで選択した年と月を取得
+    const targetYear = document.getElementById("shiftListYear").value;
+    const targetMonth = document.getElementById("shiftListMonth").value;
+
+    setYear(targetYear);
+    setMonth(targetMonth);
+
+    //ここでシフトデータ取得？
+    const data = {
+      empid: state.user.empid,
+      year: targetYear,
+      month: targetMonth,
   }
+
+  //TODO::ルートアドレスをenvファイルでとれるようにする？
+  axios.post('http://localhost:80/shift_mobile/shift.php', data,{
+      withCredentials: true,
+    })
+  .then((res)=>{
+      console.log(res.data.shift);
+
+      dispatch({
+          type: FETCH_SHIFT,
+          data: res.data.shift
+      })
+  })
+  .catch((err)=>{
+      console.log(err);
+  })
+
+  },[year, month, dispatch, state.user.empid])
+
+  //　レンダリング時にstoreにある自分のシフトをテーブルに表示
+  useEffect(()=>{
+
+    setShiftData (
+
+      state.shift.map((shiftData) => {
+        // {date: "12/1", time: "8:00-12:00"}
+          console.log(shiftData);
+          return(
+            { 
+              date: `${new String(shiftData.date).split('-')[1]}/${new String(shiftData.date).split('-')[2]}`,
+              time: `${new String(shiftData.start_time).substring(0, 5)}-${new String(shiftData.end_time).substring(0, 5)}`,
+            } 
+          );
+          
+      })
+
+    )
+  },[state])
 
   return (
     <>
@@ -41,9 +111,9 @@ export const ShiftList = () => {
               <SelectBoxYearMonth
                 id="shiftListYear"
                 tani="年"
-                value={new Date().getFullYear()}
+                value={year}
               >
-                <option value={new Date().getFullYear() - 1}>
+                <option value={month}>
                   {new Date().getFullYear() - 1}
                 </option>
                 <option value={new Date().getFullYear()}>
@@ -59,7 +129,7 @@ export const ShiftList = () => {
               <SelectBoxYearMonth 
               id="shiftListMonth" 
               tani="月"
-              value={new Date().getMonth() + 1}
+              value={month}
               >
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -98,13 +168,18 @@ export const ShiftList = () => {
             </tr>
           </thead>
           <tbody>
-            <ShiftListTr day="12/1" time="8:00-12:00" setDay={setDay} setTime={setTime} open={open}/>
+            {
+              shiftData.map((data)=>(
+                <ShiftListTr day={data.date} time={data.time} setDay={setDay} setTime={setTime} open={open}/>
+              ))
+            }
+            
           </tbody>
         </table>
         <div
           style={{ textAlign: "center", margin: "40px auto 0px" }}
         >
-          <PrimaryButton onClick={() => history.push("/calendar")}>
+          <PrimaryButton onClick={() => history.push({pathname: "/calendar", state: {year, month}})}>
             カレンダー
           </PrimaryButton>
         </div>

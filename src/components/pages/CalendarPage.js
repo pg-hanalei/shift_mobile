@@ -101,7 +101,7 @@ export const CalendarPage = () => {
       <div
         style={{ width: "80%", textAlign: "center", margin: "40px auto 0px" }}
       >
-        <PrimaryButton onClick={() => history.push("/shift_list")}>申請内容　一覧</PrimaryButton>
+        <PrimaryButton onClick={() => history.push({pathname:"/shift_list", state: {year, month} })}>申請内容　一覧</PrimaryButton>
       </div>
 
       <Modal>

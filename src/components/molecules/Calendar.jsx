@@ -44,6 +44,7 @@ export const Calendar = memo((props) => {
       withCredentials: true,
     })
   .then((res)=>{
+    console.log("carender")
       console.log(res.data.shift);
 
       dispatch({

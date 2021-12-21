@@ -39,7 +39,7 @@ export const ModalRegistry = memo((props) => {
               className="form-control form-control-lg"
               style={selectStyle}
               id="registryStartHour"
-              defaultValue={time.split(':')[0]}
+              defaultValue={Number(time.split(':')[0])}
             >
               <option value="8">8</option>
               <option value="9">9</option>
