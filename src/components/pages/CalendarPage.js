@@ -6,10 +6,12 @@ import { Calendar } from "../molecules/Calendar";
 import { NextPrevButton } from "../atoms/button/NextPrevButton";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
 import AppContext from '../../contexts/AppContext'
+import axios from "axios";
+import { FETCH_USER } from "../../actions";
 
 export const CalendarPage = () => {
   
-  const { state } = useContext(AppContext)
+  const { state, dispatch } = useContext(AppContext)
 
   // Fri Dec 10 2021 11:22:12 GMT+0900
   const today = useMemo(() => new Date(), []);
@@ -26,6 +28,7 @@ export const CalendarPage = () => {
 
   // モーダル表示用 カレンダーから選択した日付を取得する
   const [day, setDay] = useState("");
+  const [time, setTime] = useState("");
 
   // モーダル表示API
   const [Modal, open, close] = useModal("root", {
@@ -35,6 +38,41 @@ export const CalendarPage = () => {
 
   // ページ遷移などのAPI
   const history = useHistory();
+
+  useEffect(()=>{
+    if(state.user.length <= 0){
+      
+
+      const data = {
+        token: "token",
+      }
+      //ここでuser情報を取得する cookieにあるtokenでDBを検索
+      axios.post(`${process.env.REACT_APP_DOMAIN}/shift_mobile/login.php`, data,{
+      withCredentials: true,
+    }).then((res)=>{
+        console.log(res);
+
+        const {empid, emp_name, stoid, sto_name } = res.data.user;
+
+            dispatch({
+                type: FETCH_USER,
+                empid: empid,
+                empname: emp_name,
+                stoid,
+                stoname: sto_name
+            })
+
+    }).catch((err)=>{
+
+    })
+
+
+
+    }else{
+      console.log("ストアがあります")
+    }
+  },[state])
+
 
   // 初期表示
   useEffect(() => {
@@ -95,6 +133,7 @@ export const CalendarPage = () => {
         month={month + 1}
         today={today}
         setDay={setDay}
+        setTime={setTime}
         open={open}
       />
 
@@ -105,7 +144,7 @@ export const CalendarPage = () => {
       </div>
 
       <Modal>
-        <ModalRegistry year={year} month={month + 1} day={day} time={"9:30-14:00"} close={close} />
+        <ModalRegistry year={year} month={month + 1} day={day} time={time} close={close} />
       </Modal>
     </div>
   );

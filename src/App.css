@@ -74,7 +74,6 @@ th, td {
     color: #fff;
 }
 
-
 #calendar td.marked::after {
   display: block;
   margin: 0 auto;
@@ -84,3 +83,9 @@ th, td {
   background-color: orange;
   border-radius: 999px;
 }
+
+
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: #e0ffff
+ }

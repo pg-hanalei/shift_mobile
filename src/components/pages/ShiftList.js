@@ -29,7 +29,6 @@ export const ShiftList = () => {
   // シフト一覧表示用
   const [shiftData, setShiftData] = useState([]);
 
-
   // ページ遷移用API
   const history = useHistory();
 
@@ -62,7 +61,7 @@ export const ShiftList = () => {
   }
 
   //TODO::ルートアドレスをenvファイルでとれるようにする？
-  axios.post('http://localhost:80/shift_mobile/shift.php', data,{
+  axios.post(`${process.env.REACT_APP_DOMAIN}/shift_mobile/shift.php`, data,{
       withCredentials: true,
     })
   .then((res)=>{
@@ -77,7 +76,8 @@ export const ShiftList = () => {
       console.log(err);
   })
 
-  },[year, month, dispatch, state.user.empid])
+  },[dispatch, state.user.empid])
+  
 
   //　レンダリング時にstoreにある自分のシフトをテーブルに表示
   useEffect(()=>{
@@ -98,6 +98,8 @@ export const ShiftList = () => {
 
     )
   },[state])
+
+
 
   return (
     <>
@@ -157,7 +159,7 @@ export const ShiftList = () => {
             </div>
           </form>
         </div>
-        <table className="table table-striped u-mt-40" style={{backgroundColor:"#fff", boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"}}>
+        <table className="table table-striped u-mt-40" style={{boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"}}>
           <thead>
             <tr>
               <th scope="col" style={{ width: "10%" }}>
@@ -167,10 +169,10 @@ export const ShiftList = () => {
               <th scope="col" style={{ width: "30%" }}></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="table-striped">
             {
               shiftData.map((data)=>(
-                <ShiftListTr day={data.date} time={data.time} setDay={setDay} setTime={setTime} open={open}/>
+                <ShiftListTr key={data.date} day={data.date} time={data.time} setDay={setDay} setTime={setTime} open={open}/>
               ))
             }
             

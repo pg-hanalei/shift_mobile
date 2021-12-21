@@ -2,9 +2,10 @@ import { useMemo, memo, useEffect, useContext } from "react";
 import axios from "axios";
 import { FETCH_SHIFT } from "../../actions";
 import AppContext from "../../contexts/AppContext";
+import reactRouterDom from "react-router-dom";
 
 export const Calendar = memo((props) => {
-  const { year, month, setDay, today, open } = props;
+  const { year, month, setDay, setTime, today, open } = props;
 
   const week = useMemo(() => {
     return ["日", "月", "火", "水", "木", "金", "土"];
@@ -24,7 +25,9 @@ export const Calendar = memo((props) => {
 
   const onClickRegistryModal = (e) => {
     const day = e.currentTarget.getAttribute("data-day");
+    const time = e.currentTarget.getAttribute("data-time");
     setDay(day);
+    setTime(time)
     open();
   };
 
@@ -32,7 +35,11 @@ export const Calendar = memo((props) => {
 
   useEffect(()=>{
 
-    //ここでシフトデータ取得？
+    if(state.user.length < 1){
+      return;
+    }
+
+    //ここでシフトデータ取得
     const data = {
       empid: state.user.empid,
       year,
@@ -40,13 +47,10 @@ export const Calendar = memo((props) => {
   }
 
   //TODO::ルートアドレスをenvファイルでとれるようにする？
-  axios.post('http://localhost:80/shift_mobile/shift.php', data,{
+  axios.post(`${process.env.REACT_APP_DOMAIN}/shift_mobile/shift.php`, data,{
       withCredentials: true,
     })
   .then((res)=>{
-    console.log("carender")
-      console.log(res.data.shift);
-
       dispatch({
           type: FETCH_SHIFT,
           data: res.data.shift
@@ -96,10 +100,22 @@ export const Calendar = memo((props) => {
                       // 当月の日付を曜日に照らし合わせて設定
                       count++;
 
-                      const rst = state.shift.filter((data) => {
-                        return count == data.date.split("-")[2];
-                      })
-                      let mark = (rst != 0);
+                      let mark = "";
+                      let time = "08:00-08:00";
+
+                      if(state.shift !== undefined && state.shift.length > 0){
+                        const rst = state.shift.filter((data) => {
+                          return count == data.date.split("-")[2];
+                        })
+  
+                        mark = (rst != 0);
+
+                        if(mark) {
+                          time = new String(`${new String(rst[0].start_time).substring(0, 5)}-${new String(rst[0].end_time).substring(0, 5)}`);
+                        }
+                      }
+                      
+                                            
 
                       if (
                         year === today.getFullYear() &&
@@ -122,6 +138,7 @@ export const Calendar = memo((props) => {
                           <td
                             key={j}
                             data-day={count}
+                            data-time={time}
                             className={mark && "marked"}
                             onClick={onClickRegistryModal}
                           >
