@@ -6,8 +6,7 @@ import { Calendar } from "../molecules/Calendar";
 import { NextPrevButton } from "../atoms/button/NextPrevButton";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
 import AppContext from '../../contexts/AppContext'
-import axios from "axios";
-import { FETCH_USER } from "../../actions";
+import { FetchLoginUserByToken } from "../../utility/MyFunc";
 
 export const CalendarPage = () => {
   
@@ -39,38 +38,9 @@ export const CalendarPage = () => {
   // ページ遷移などのAPI
   const history = useHistory();
 
+  // ページリロード対応
   useEffect(()=>{
-    if(state.user.length <= 0){
-      
-
-      const data = {
-        token: "token",
-      }
-      //ここでuser情報を取得する cookieにあるtokenでDBを検索
-      axios.post(`${process.env.REACT_APP_DOMAIN}/shift_mobile/login.php`, data,{
-      withCredentials: true,
-    }).then((res)=>{
-        console.log(res);
-
-        const {empid, emp_name, stoid, sto_name } = res.data.user;
-
-            dispatch({
-                type: FETCH_USER,
-                empid: empid,
-                empname: emp_name,
-                stoid,
-                stoname: sto_name
-            })
-
-    }).catch((err)=>{
-
-    })
-
-
-
-    }else{
-      console.log("ストアがあります")
-    }
+    FetchLoginUserByToken(state,dispatch);
   },[state])
 
 
@@ -116,7 +86,7 @@ export const CalendarPage = () => {
           margin: "1rem 0 0",
         }}
       >
-        {yearMonth}
+        {`${year} 年 ${month + 1} 月`}
       </h1>
 
       <div id="next-prev-button" style={{ position: "relative" }}>

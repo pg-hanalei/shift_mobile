@@ -1,8 +1,6 @@
 import { useMemo, memo, useEffect, useContext } from "react";
-import axios from "axios";
-import { FETCH_SHIFT } from "../../actions";
 import AppContext from "../../contexts/AppContext";
-import reactRouterDom from "react-router-dom";
+import { FetchShiftData } from "../../utility/MyFunc";
 
 export const Calendar = memo((props) => {
   const { year, month, setDay, setTime, today, open } = props;
@@ -33,32 +31,9 @@ export const Calendar = memo((props) => {
 
   const {state, dispatch} = useContext(AppContext);
 
+  //　シフトデータ取得
   useEffect(()=>{
-
-    if(state.user.length < 1){
-      return;
-    }
-
-    //ここでシフトデータ取得
-    const data = {
-      empid: state.user.empid,
-      year,
-      month,
-  }
-
-  //TODO::ルートアドレスをenvファイルでとれるようにする？
-  axios.post(`${process.env.REACT_APP_DOMAIN}/shift_mobile/shift.php`, data,{
-      withCredentials: true,
-    })
-  .then((res)=>{
-      dispatch({
-          type: FETCH_SHIFT,
-          data: res.data.shift
-      })
-  })
-  .catch((err)=>{
-      console.log(err);
-  })
+    FetchShiftData(state, dispatch, year, month)
   },[year, month, dispatch, state.user.empid])
 
   return (

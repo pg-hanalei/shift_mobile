@@ -10,6 +10,7 @@ import { ModalRegistry } from "../molecules/ModalRegistry";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
 import { SelectBoxYearMonth } from "../atoms/select/SelectBoxYearMonth";
 import { ShiftListTr } from "../atoms/table/ShiftListTr";
+import { FetchLoginUserByToken, FetchShiftData } from "../../utility/MyFunc";
 
 
 export const ShiftList = () => {
@@ -21,8 +22,8 @@ export const ShiftList = () => {
   const {state, dispatch} = useContext(AppContext);
 
   // モーダル表示用
-  const [year, setYear] = useState(location.state.year);
-  const [month, setMonth] = useState(location.state.month + 1);
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [day, setDay] = useState("");
   const [time, setTime] = useState("");
 
@@ -41,11 +42,7 @@ export const ShiftList = () => {
   // 検索ボタンを押したら、テーブルを出すと共に、年月を格納する
   const onClickShiftSearch = useCallback((e) => {
     e.preventDefault();
-
-    console.log("select")
-    console.log(document.getElementById("shiftListYear").value)
-    console.log(document.getElementById("shiftListMonth").value)
-
+    
     // セレクトボックスで選択した年と月を取得
     const targetYear = document.getElementById("shiftListYear").value;
     const targetMonth = document.getElementById("shiftListMonth").value;
@@ -77,10 +74,24 @@ export const ShiftList = () => {
   })
 
   },[dispatch, state.user.empid])
+
+  useEffect(()=>{
+    // ページリロード対応
+    FetchLoginUserByToken(state,dispatch);
+  },[])
+
+  //　シフトデータ取得
+  useEffect(()=>{
+    FetchShiftData(state, dispatch, year, month)
+  },[year, month, dispatch, state.user.empid])
   
 
   //　レンダリング時にstoreにある自分のシフトをテーブルに表示
   useEffect(()=>{
+
+    if(state.user.length <= 0){
+      return;
+    }
 
     setShiftData (
 
@@ -98,6 +109,8 @@ export const ShiftList = () => {
 
     )
   },[state])
+
+  
 
 
 
