@@ -40,6 +40,7 @@ export const CalendarPage = () => {
 
   // ページリロード対応
   useEffect(()=>{
+    console.log("fetchUser")
     FetchLoginUserByToken(state,dispatch);
   },[state])
 
@@ -102,6 +103,7 @@ export const CalendarPage = () => {
         year={year}
         month={month + 1}
         today={today}
+        state={state}
         setDay={setDay}
         setTime={setTime}
         open={open}

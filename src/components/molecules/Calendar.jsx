@@ -33,6 +33,7 @@ export const Calendar = memo((props) => {
 
   //　シフトデータ取得
   useEffect(()=>{
+    console.log(month);
     FetchShiftData(state, dispatch, year, month)
   },[year, month, dispatch, state.user.empid])
 
@@ -101,6 +102,7 @@ export const Calendar = memo((props) => {
                           <td
                             key={j}
                             data-day={count}
+                            data-time={time}
                             className={`today ${mark && "marked"}`}
                             onClick={onClickRegistryModal}
                           >

@@ -33,7 +33,10 @@ export const FetchLoginUserByToken = (state,dispatch ) => {
 
 
 export const FetchShiftData = (state, dispatch, year, month) => {
-  if(state.user.length < 1 || state.shift.length > 1){
+  console.log("FetchShiftDataStart");
+  console.log(state);
+
+  if(state.user.length < 1){
     return;
   }
 
