@@ -50,29 +50,6 @@ export const ShiftList = () => {
     setYear(targetYear);
     setMonth(targetMonth);
 
-    //ここでシフトデータ取得？
-    const data = {
-      empid: state.user.empid,
-      year: targetYear,
-      month: targetMonth,
-  }
-
-  //TODO::ルートアドレスをenvファイルでとれるようにする？
-  axios.post(`${process.env.REACT_APP_DOMAIN}/shift_mobile/shift.php`, data,{
-      withCredentials: true,
-    })
-  .then((res)=>{
-      console.log(res.data.shift);
-
-      dispatch({
-          type: FETCH_SHIFT,
-          data: res.data.shift
-      })
-  })
-  .catch((err)=>{
-      console.log(err);
-  })
-
   },[dispatch, state.user.empid])
 
   useEffect(()=>{
@@ -88,8 +65,8 @@ export const ShiftList = () => {
 
   //　レンダリング時にstoreにある自分のシフトをテーブルに表示
   useEffect(()=>{
-
-    if(state.user.length <= 0){
+    
+    if(state.user.length < 1){
       return;
     }
 
@@ -103,17 +80,12 @@ export const ShiftList = () => {
               date: `${new String(shiftData.date).split('-')[1]}/${new String(shiftData.date).split('-')[2]}`,
               time: `${new String(shiftData.start_time).substring(0, 5)}-${new String(shiftData.end_time).substring(0, 5)}`,
             } 
-          );
-          
+          );  
       })
-
     )
   },[state])
 
   
-
-
-
   return (
     <>
       <div className="container">

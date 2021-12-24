@@ -34,13 +34,10 @@ export const FetchLoginUserByToken = (state,dispatch ) => {
 
 export const FetchShiftData = (state, dispatch, year, month) => {
   console.log("FetchShiftDataStart");
-  console.log(state);
-
+  
   if(state.user.length < 1){
     return;
   }
-
-  console.log("FetchShiftData");
 
   //ここでシフトデータ取得
   const data = {
@@ -54,6 +51,7 @@ axios.post(`${process.env.REACT_APP_DOMAIN}/shift_mobile/shift.php`, data,{
     withCredentials: true,
   })
 .then((res)=>{
+  console.log("シフト取得成功");
     dispatch({
         type: FETCH_SHIFT,
         data: res.data.shift

@@ -29,13 +29,7 @@ export const Calendar = memo((props) => {
     open();
   };
 
-  const {state, dispatch} = useContext(AppContext);
-
-  //　シフトデータ取得
-  useEffect(()=>{
-    console.log(month);
-    FetchShiftData(state, dispatch, year, month)
-  },[year, month, dispatch, state.user.empid])
+  const {state} = useContext(AppContext);
 
   return (
     <>
@@ -84,15 +78,12 @@ export const Calendar = memo((props) => {
                           return count == data.date.split("-")[2];
                         })
   
-                        mark = (rst != 0);
-
-                        if(mark) {
+                        if(rst != 0) {
                           time = new String(`${new String(rst[0].start_time).substring(0, 5)}-${new String(rst[0].end_time).substring(0, 5)}`);
+                          mark = "mark";
                         }
                       }
-                      
-                                            
-
+                    
                       if (
                         year === today.getFullYear() &&
                         month === today.getMonth() + 1 &&
@@ -103,7 +94,7 @@ export const Calendar = memo((props) => {
                             key={j}
                             data-day={count}
                             data-time={time}
-                            className={`today ${mark && "marked"}`}
+                            className={`today ${mark}`}
                             onClick={onClickRegistryModal}
                           >
                             {count}
@@ -116,7 +107,7 @@ export const Calendar = memo((props) => {
                             key={j}
                             data-day={count}
                             data-time={time}
-                            className={mark && "marked"}
+                            className={mark}
                             onClick={onClickRegistryModal}
                           >
                             {count}

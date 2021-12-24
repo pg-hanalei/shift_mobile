@@ -6,7 +6,7 @@ import { Calendar } from "../molecules/Calendar";
 import { NextPrevButton } from "../atoms/button/NextPrevButton";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
 import AppContext from '../../contexts/AppContext'
-import { FetchLoginUserByToken } from "../../utility/MyFunc";
+import { FetchLoginUserByToken, FetchShiftData } from "../../utility/MyFunc";
 
 export const CalendarPage = () => {
   
@@ -42,8 +42,12 @@ export const CalendarPage = () => {
   useEffect(()=>{
     console.log("fetchUser")
     FetchLoginUserByToken(state,dispatch);
-  },[state])
-
+  },[])
+  
+  useEffect(()=>{
+    console.log(month);
+    FetchShiftData(state, dispatch, year, month +1)
+  },[year, month, dispatch, state.user.empid])
 
   // 初期表示
   useEffect(() => {
@@ -112,7 +116,7 @@ export const CalendarPage = () => {
       <div
         style={{ width: "80%", textAlign: "center", margin: "40px auto 0px" }}
       >
-        <PrimaryButton onClick={() => history.push({pathname:"/shift_list", state: {year, month} })}>申請内容　一覧</PrimaryButton>
+        <PrimaryButton onClick={() => history.push("/shift_list")}>申請内容　一覧</PrimaryButton>
       </div>
 
       <Modal>
