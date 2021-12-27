@@ -47,7 +47,7 @@ export const ModalRegistry = memo((props) => {
           });
 
           // result {date: '2021-12-18', start_time: '10:00:00', end_time: '18:00:00'}
-          if(result){
+          if(result.length <= 0){
             // 新規
             register_kind = 1;
           }else{
