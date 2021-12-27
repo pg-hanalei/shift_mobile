@@ -46,7 +46,6 @@ export const FetchShiftData = (state, dispatch, year, month) => {
     month,
   }
 
-//TODO::ルートアドレスをenvファイルでとれるようにする？
 axios.post(`${process.env.REACT_APP_DOMAIN}/shift_mobile/shift.php`, data,{
     withCredentials: true,
   })

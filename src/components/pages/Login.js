@@ -30,7 +30,6 @@ export const Login = () => {
             password,
         }
 
-        //TODO::ルートアドレスをenvファイルでとれるようにする？ http://localhost:80/shift_mobile/login.php
         axios.post(`${process.env.REACT_APP_DOMAIN}/shift_mobile/login.php`, data,{
             withCredentials: true,
           })

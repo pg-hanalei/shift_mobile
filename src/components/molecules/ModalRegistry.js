@@ -2,6 +2,7 @@ import { memo, useContext, useState } from "react";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
 import AppContext from "../../contexts/AppContext";
 import axios from "axios";
+import { FetchShiftData } from "../../utility/MyFunc";
 
 export const ModalRegistry = memo((props) => {
   
@@ -29,8 +30,10 @@ export const ModalRegistry = memo((props) => {
       // 新規かアップデートか 1:新規 2:更新
       let register_kind = 0;
       
-      // 開いたモーダルの日付 ex: 2021-12-26
-      const targetDate =  `${year}-${month}-${day}`;
+      // 開いたモーダルの日付 ex: 2021-12-26 1桁はバグになるので0埋め
+      const targetDate =  `${year}-${new String(month).padStart(2, '0')}-${new String(day).padStart(2, '0')}`;
+      console.log(targetDate);
+      console.log(state.shift);
 
       // 開始時間
       const start_time = `${startTimeHour}:${startTimeMinute}:00`;
@@ -72,13 +75,46 @@ export const ModalRegistry = memo((props) => {
           }).then( (res) => {
             
             console.log(res);
-            //storeを更新する
+            FetchShiftData(state, dispatch, year, month);
+
+            close();
 
           }).catch((err)=>{
             console.log(err);
+            alert("登録に失敗しました")
           })
       }
+    }
 
+    const onClickDelete = (e) => {
+      e.preventDefault();
+
+      // 新規かアップデートか 3:削除
+      let register_kind = 3;
+      
+      // 開いたモーダルの日付 ex: 2021-12-26
+      const targetDate =  `${year}-${month}-${day}`;
+
+      const data = {
+        empid: state.user.empid,
+        date: targetDate,
+        register_kind,
+      }
+
+      // shift_registerのAPIに送信する
+      axios.post(`${process.env.REACT_APP_DOMAIN}/shift_mobile/shift_register.php`, data , {
+        withCredentials: true,
+      }).then( (res) => {
+        
+        console.log(res);
+        FetchShiftData(state, dispatch, year, month);
+
+        close();
+
+      }).catch((err)=>{
+        console.log(err);
+        alert("登録に失敗しました")
+      })
 
     }
   
@@ -203,7 +239,7 @@ export const ModalRegistry = memo((props) => {
         <div style={{ width: "100%", textAlign: "center", marginTop: "20px" }}>
           <PrimaryButton onClick={onClickRegister}>申請する</PrimaryButton>
           <br />
-          <PrimaryButton onClick={close} className={"btn-danger"}>取り下げる</PrimaryButton>
+          <PrimaryButton onClick={onClickDelete} className={"btn-danger"}>取り下げる</PrimaryButton>
           <br />
           <PrimaryButton onClick={close} className={"btn-secondary"}>閉じる</PrimaryButton>
         </div>
