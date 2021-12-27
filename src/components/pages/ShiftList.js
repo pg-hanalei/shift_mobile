@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState, useContext } from "react";
-import axios from "axios";
 
 import AppContext from "../../contexts/AppContext";
-import { FETCH_SHIFT } from "../../actions";
 
 import { useModal } from "react-hooks-use-modal";
 import { useHistory, useLocation } from "react-router-dom";

@@ -1,6 +1,5 @@
 import { useMemo, memo, useEffect, useContext } from "react";
 import AppContext from "../../contexts/AppContext";
-import { FetchShiftData } from "../../utility/MyFunc";
 
 export const Calendar = memo((props) => {
   const { year, month, setDay, setTime, today, open } = props;
@@ -80,7 +79,7 @@ export const Calendar = memo((props) => {
   
                         if(rst != 0) {
                           time = new String(`${new String(rst[0].start_time).substring(0, 5)}-${new String(rst[0].end_time).substring(0, 5)}`);
-                          mark = "mark";
+                          mark = "marked";
                         }
                       }
                     
