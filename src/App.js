@@ -9,14 +9,18 @@ export const App = () => {
 
   const { Toaster, successToast } = useHotToast();
 
-  const logoutToast = () => successToast("ログアウトしました");
+  const logoutToast = (text) => successToast(text);
+
+  
 
   const initialState = {
     user: [],
+    shift: [],
   }
 
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  console.log("app")
+  console.log(state);
   return(
     <AppContext.Provider value={{state, dispatch, logoutToast}}>
       <HashRouter basename='/shift_mobile/'>

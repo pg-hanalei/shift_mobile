@@ -77,13 +77,13 @@ export const ModalRegistry = memo((props) => {
             console.log(res);
             FetchShiftData(state, dispatch, year, month);
 
-            showSuccessToast();
+            showSuccessToast("登録が完了しました");
 
             close();
 
           }).catch((err)=>{
             console.log(err);
-            showErrorToast();
+            showErrorToast("登録に失敗しました(01)");
           })
       }
     }
@@ -110,13 +110,13 @@ export const ModalRegistry = memo((props) => {
         
         console.log(res);
         FetchShiftData(state, dispatch, year, month);
-        showSuccessToast();
+        showSuccessToast("申請を取り下げました");
 
         close();
 
       }).catch((err)=>{
         console.log(err);
-        showErrorToast();
+        showErrorToast("申請の取り下げに失敗しました(02)");
       })
 
     }

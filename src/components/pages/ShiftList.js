@@ -55,8 +55,8 @@ export const ShiftList = () => {
     [dispatch, state.user.empid]
   );
 
-  const showSuccessToast = () => successToast("登録が完了しました");
-  const showErrorToast = () => errorToast("登録に失敗しました(01)");
+  const showSuccessToast = (text) => successToast(text);
+  const showErrorToast = (text) => errorToast(text);
 
   useEffect(() => {
     // ページリロード対応

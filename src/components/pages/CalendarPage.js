@@ -43,8 +43,8 @@ export const CalendarPage = () => {
   // toast表示API
   const { Toaster, successToast, errorToast} = useHotToast();
 
-  const showSuccessToast = () => successToast("登録が完了しました");
-  const showErrorToast = () => errorToast("登録に失敗しました(01)");
+  const showSuccessToast = (text) => successToast(text);
+  const showErrorToast = (text) => errorToast(text);
 
   // ページリロード対応
   useEffect(()=>{
@@ -54,6 +54,7 @@ export const CalendarPage = () => {
   
   useEffect(()=>{
     console.log(month);
+    console.log("kokore")
     FetchShiftData(state, dispatch, year, month +1)
   },[year, month, dispatch, state.user.empid])
 

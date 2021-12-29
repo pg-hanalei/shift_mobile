@@ -1,46 +1,56 @@
-import axios from 'axios';
-import AppContext from '../../../contexts/AppContext';
-import {memo, useContext} from 'react';
+import axios from "axios";
+import AppContext from "../../../contexts/AppContext";
+import { memo, useContext } from "react";
 import { useHistory } from "react-router-dom";
+import { DELETE_SHIFT, DELETE_USER } from "../../../actions";
 
-export const LogoutButton = memo(({className="", logoutToast}) => {
+export const LogoutButton = memo(({ className = "", logoutToast }) => {
+  const history = useHistory();
 
-    const history = useHistory();
+  // グローバル変数を扱うAPI
+  const { state, dispatch } = useContext(AppContext);
 
-    // グローバル変数を扱うAPI
-  const {state, dispatch} = useContext(AppContext);
+  const onClickLogout = () => {
+    const data = {
+      empid: state.user.empid,
+    };
 
+    // axiosでAPIを叩き、DBのtokenを変更
+    axios
+      .post(`${process.env.REACT_APP_DOMAIN}/shift_mobile/logout.php`, data, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res);
 
-    const onClickLogout = () =>{
+        // storeも削除する必要がある
+        dispatch({
+          type: DELETE_USER,
+        });
 
-        const data = {
-            empid: state.user.empid,
-          }
-
-        // axiosでAPIを叩き、DBのtokenを変更
-        axios.post(`${process.env.REACT_APP_DOMAIN}/shift_mobile/logout.php`, data , {
-            withCredentials: true,
-          }).then( (res) => {
-            
-            // storeも削除する必要がある
-
-            console.log(res);
-
-    
-          }).catch((err)=>{
-            console.log(err);
-          })
+        dispatch({
+          type: DELETE_SHIFT,
+        });
 
         // ブラウザ側へのcookieの返却はなし
-        
+
         // ログイン完了のtoastを出力
-        logoutToast();
+        logoutToast("ログアウトしました");
 
         // ログイン画面に戻す
-        history.push('/');
-    }
+        history.push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-    return(
-        <button className={`btn btn-lg btn-info btn-block p-btn-logout ${className}`} onClick={onClickLogout}>申請 終了</button>
-    )
+  return (
+    <button
+      className={`btn btn-lg btn-info btn-block p-btn-logout ${className}`}
+      onClick={onClickLogout}
+    >
+      申請 終了
+    </button>
+  );
 });
