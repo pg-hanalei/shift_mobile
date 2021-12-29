@@ -5,6 +5,10 @@ const shift = (state = [], action) => {
     case FETCH_SHIFT:
       state = action.data;
       return state;
+    
+      // 内容削除
+    
+    
     default:
       return state;
   }

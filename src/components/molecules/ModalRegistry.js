@@ -9,7 +9,7 @@ export const ModalRegistry = memo((props) => {
   // グローバル変数を扱うAPI
   const {state, dispatch} = useContext(AppContext);
 
-    const {year, month, day, time, close} = props;
+    const {year, month, day, time, close, showSuccessToast, showErrorToast} = props;
 
     // 開始時間(時)
     const [startTimeHour , setStartTimeHour] = useState(time.split(':')[0]);
@@ -77,11 +77,13 @@ export const ModalRegistry = memo((props) => {
             console.log(res);
             FetchShiftData(state, dispatch, year, month);
 
+            showSuccessToast();
+
             close();
 
           }).catch((err)=>{
             console.log(err);
-            alert("登録に失敗しました")
+            showErrorToast();
           })
       }
     }
@@ -108,12 +110,13 @@ export const ModalRegistry = memo((props) => {
         
         console.log(res);
         FetchShiftData(state, dispatch, year, month);
+        showSuccessToast();
 
         close();
 
       }).catch((err)=>{
         console.log(err);
-        alert("登録に失敗しました")
+        showErrorToast();
       })
 
     }

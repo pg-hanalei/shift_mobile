@@ -1,5 +1,5 @@
-import axios from "axios";
 import React, { useCallback, useContext, useState } from "react";
+import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
 import { FETCH_USER } from "../../actions";
@@ -17,7 +17,6 @@ export const Login = () => {
 
     const onChangeEmpid = (e)=>setEmpid(e.target.value);
     const onChangePassword = (e)=>setPassword(e.target.value);
-
 
     //ログインボタン
     const onClickLogin = useCallback((e) => {
@@ -74,7 +73,7 @@ export const Login = () => {
                 </div>
 
                 <div className="form-label-group" style={{marginTop: "20px"}}>
-                    <InputText id="inputPassword" placeholder="パスワードを入力" value={password} onChange={onChangePassword}>パスワード</InputText>
+                    <InputText id="inputPassword" type="password" placeholder="パスワードを入力" value={password} onChange={onChangePassword}>パスワード</InputText>
                 </div>
 
                 <div className="form-label-group" style={{marginTop:"28px"}}>

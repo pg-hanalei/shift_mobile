@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, useContext } from "react";
+import { useHotToast }  from "../../hooks/useHotToast";
 import { useModal } from "react-hooks-use-modal";
 import { useHistory } from "react-router-dom";
 import { ModalRegistry } from "../molecules/ModalRegistry";
@@ -7,10 +8,11 @@ import { NextPrevButton } from "../atoms/button/NextPrevButton";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
 import AppContext from '../../contexts/AppContext'
 import { FetchLoginUserByToken, FetchShiftData } from "../../utility/MyFunc";
+import { LogoutButton } from "../atoms/button/LogoutButton";
 
 export const CalendarPage = () => {
   
-  const { state, dispatch } = useContext(AppContext)
+  const { state, dispatch, logoutToast } = useContext(AppContext)
 
   // Fri Dec 10 2021 11:22:12 GMT+0900
   const today = useMemo(() => new Date(), []);
@@ -37,6 +39,12 @@ export const CalendarPage = () => {
 
   // ページ遷移などのAPI
   const history = useHistory();
+
+  // toast表示API
+  const { Toaster, successToast, errorToast} = useHotToast();
+
+  const showSuccessToast = () => successToast("登録が完了しました");
+  const showErrorToast = () => errorToast("登録に失敗しました(01)");
 
   // ページリロード対応
   useEffect(()=>{
@@ -119,9 +127,16 @@ export const CalendarPage = () => {
         <PrimaryButton onClick={() => history.push("/shift_list")}>申請内容　一覧</PrimaryButton>
       </div>
 
+      <div
+        style={{ width: "80%", textAlign: "center", margin: "100px auto 0px" }}
+      >
+        <LogoutButton logoutToast={logoutToast} />
+      </div>
+
       <Modal>
-        <ModalRegistry year={year} month={month + 1} day={day} time={time} close={close} />
+        <ModalRegistry year={year} month={month + 1} day={day} time={time} close={close}  showSuccessToast={showSuccessToast} showErrorToast={showErrorToast} />
       </Modal>
+      <Toaster />
     </div>
   );
 };

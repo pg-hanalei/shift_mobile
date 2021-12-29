@@ -1,3 +1,4 @@
+import { useHotToast }  from "./hooks/useHotToast";
 import { HashRouter } from 'react-router-dom';
 import { Router } from './route/Router';
 import AppContext from './contexts/AppContext';
@@ -6,6 +7,10 @@ import reducer from './reducers';
 
 export const App = () => {
 
+  const { Toaster, successToast } = useHotToast();
+
+  const logoutToast = () => successToast("ログアウトしました");
+
   const initialState = {
     user: [],
   }
@@ -13,10 +18,11 @@ export const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return(
-    <AppContext.Provider value={{state, dispatch}}>
+    <AppContext.Provider value={{state, dispatch, logoutToast}}>
       <HashRouter basename='/shift_mobile/'>
         <Router />
       </HashRouter>
+      <Toaster />
     </AppContext.Provider>
   );
 }

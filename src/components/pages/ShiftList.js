@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState, useContext } from "react";
+import { useHotToast } from "../../hooks/useHotToast";
 
 import AppContext from "../../contexts/AppContext";
 
@@ -9,15 +10,14 @@ import { PrimaryButton } from "../atoms/button/PrimaryButton";
 import { SelectBoxYearMonth } from "../atoms/select/SelectBoxYearMonth";
 import { ShiftListTr } from "../atoms/table/ShiftListTr";
 import { FetchLoginUserByToken, FetchShiftData } from "../../utility/MyFunc";
-
+import { LogoutButton } from "../atoms/button/LogoutButton";
 
 export const ShiftList = () => {
-
   // カレンダーから渡された値を受け取るAPI
   const location = useLocation();
 
   // グローバル変数を扱うAPI
-  const {state, dispatch} = useContext(AppContext);
+  const { state, dispatch, logoutToast } = useContext(AppContext);
 
   // モーダル表示用
   const [year, setYear] = useState(new Date().getFullYear());
@@ -37,53 +37,60 @@ export const ShiftList = () => {
     closeOnOverlayClick: false,
   });
 
+  // toast表示API
+  const { Toaster, successToast, errorToast } = useHotToast();
+
   // 検索ボタンを押したら、テーブルを出すと共に、年月を格納する
-  const onClickShiftSearch = useCallback((e) => {
-    e.preventDefault();
-    
-    // セレクトボックスで選択した年と月を取得
-    const targetYear = document.getElementById("shiftListYear").value;
-    const targetMonth = document.getElementById("shiftListMonth").value;
+  const onClickShiftSearch = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    setYear(targetYear);
-    setMonth(targetMonth);
+      // セレクトボックスで選択した年と月を取得
+      const targetYear = document.getElementById("shiftListYear").value;
+      const targetMonth = document.getElementById("shiftListMonth").value;
 
-  },[dispatch, state.user.empid])
+      setYear(targetYear);
+      setMonth(targetMonth);
+    },
+    [dispatch, state.user.empid]
+  );
 
-  useEffect(()=>{
+  const showSuccessToast = () => successToast("登録が完了しました");
+  const showErrorToast = () => errorToast("登録に失敗しました(01)");
+
+  useEffect(() => {
     // ページリロード対応
-    FetchLoginUserByToken(state,dispatch);
-  },[])
+    FetchLoginUserByToken(state, dispatch);
+  }, []);
 
   //　シフトデータ取得
-  useEffect(()=>{
-    FetchShiftData(state, dispatch, year, month)
-  },[year, month, dispatch, state.user.empid])
-  
+  useEffect(() => {
+    FetchShiftData(state, dispatch, year, month);
+  }, [year, month, dispatch, state.user.empid]);
 
   //　レンダリング時にstoreにある自分のシフトをテーブルに表示
-  useEffect(()=>{
-    
-    if(state.user.length < 1){
+  useEffect(() => {
+    if (state.user.length < 1) {
       return;
     }
 
-    setShiftData (
-
+    setShiftData(
       state.shift.map((shiftData) => {
         // {date: "12/1", time: "8:00-12:00"}
-          console.log(shiftData);
-          return(
-            { 
-              date: `${new String(shiftData.date).split('-')[1]}/${new String(shiftData.date).split('-')[2]}`,
-              time: `${new String(shiftData.start_time).substring(0, 5)}-${new String(shiftData.end_time).substring(0, 5)}`,
-            } 
-          );  
+        console.log(shiftData);
+        return {
+          date: `${new String(shiftData.date).split("-")[1]}/${
+            new String(shiftData.date).split("-")[2]
+          }`,
+          time: `${new String(shiftData.start_time).substring(
+            0,
+            5
+          )}-${new String(shiftData.end_time).substring(0, 5)}`,
+        };
       })
-    )
-  },[state])
+    );
+  }, [state]);
 
-  
   return (
     <>
       <div className="container">
@@ -93,14 +100,8 @@ export const ShiftList = () => {
           <form>
             <div className="form-group">
               <label htmlFor="shiftListYear"></label>
-              <SelectBoxYearMonth
-                id="shiftListYear"
-                tani="年"
-                value={year}
-              >
-                <option value={month}>
-                  {new Date().getFullYear() - 1}
-                </option>
+              <SelectBoxYearMonth id="shiftListYear" tani="年" value={year}>
+                <option value={month}>{new Date().getFullYear() - 1}</option>
                 <option value={new Date().getFullYear()}>
                   {new Date().getFullYear()}
                 </option>
@@ -111,11 +112,7 @@ export const ShiftList = () => {
             </div>
             <div className="form-group">
               <label htmlFor="shiftListMonth"></label>
-              <SelectBoxYearMonth 
-              id="shiftListMonth" 
-              tani="月"
-              value={month}
-              >
+              <SelectBoxYearMonth id="shiftListMonth" tani="月" value={month}>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -136,13 +133,15 @@ export const ShiftList = () => {
                 margin: "40px auto 0px",
               }}
             >
-              <PrimaryButton onClick={onClickShiftSearch}>
-                検索
-              </PrimaryButton>
+              <PrimaryButton onClick={onClickShiftSearch}>検索</PrimaryButton>
             </div>
+            
           </form>
         </div>
-        <table className="table table-striped u-mt-40" style={{boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"}}>
+        <table
+          className="table table-striped u-mt-40"
+          style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}
+        >
           <thead>
             <tr>
               <th scope="col" style={{ width: "10%" }}>
@@ -153,25 +152,49 @@ export const ShiftList = () => {
             </tr>
           </thead>
           <tbody className="table-striped">
-            {
-              shiftData.map((data)=>(
-                <ShiftListTr key={data.date} day={data.date} time={data.time} setDay={setDay} setTime={setTime} open={open}/>
-              ))
-            }
-            
+            {shiftData.map((data) => (
+              <ShiftListTr
+                key={data.date}
+                day={data.date}
+                time={data.time}
+                setDay={setDay}
+                setTime={setTime}
+                open={open}
+              />
+            ))}
           </tbody>
         </table>
-        <div
-          style={{ textAlign: "center", margin: "40px auto 0px" }}
-        >
-          <PrimaryButton onClick={() => history.push({pathname: "/calendar", state: {year, month}})}>
+        <div style={{ textAlign: "center", margin: "40px auto 0px" }}>
+          <PrimaryButton
+            onClick={() =>
+              history.push({ pathname: "/calendar", state: { year, month } })
+            }
+          >
             カレンダー
           </PrimaryButton>
         </div>
       </div>
+      <div
+              style={{
+                width: "80%",
+                textAlign: "center",
+                margin: "100px auto 80px",
+              }}
+            >
+              <LogoutButton logoutToast={logoutToast} />
+            </div>
       <Modal>
-        <ModalRegistry year={year} month={month} day={day} time={time} close={close} />
+        <ModalRegistry
+          year={year}
+          month={month}
+          day={day}
+          time={time}
+          close={close}
+          showSuccessToast={showSuccessToast}
+          showErrorToast={showErrorToast}
+        />
       </Modal>
+      <Toaster />
     </>
   );
 };

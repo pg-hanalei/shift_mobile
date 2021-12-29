@@ -41,6 +41,7 @@
     ]
   },
   "devDependencies": {
-    "react-hooks-use-modal": "^2.1.0"
+    "react-hooks-use-modal": "^2.1.0",
+    "react-hot-toast": "^2.1.1"
   }
 }

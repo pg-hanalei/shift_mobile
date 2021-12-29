@@ -13,6 +13,10 @@ body {
     padding-bottom: 60px;
 }
 
+.p-btn-logout {
+    width: 150px;
+    margin: 0 auto;
+}
 
 /*ユーティリティ*/
 
@@ -31,6 +35,8 @@ body {
 .u-float--right {
     float: right;
 }
+
+
 
 
 
