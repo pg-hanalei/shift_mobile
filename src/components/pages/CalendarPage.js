@@ -17,9 +17,6 @@ export const CalendarPage = () => {
   // Fri Dec 10 2021 11:22:12 GMT+0900
   const today = useMemo(() => new Date(), []);
 
-  // ヘッダー表示用
-  const [yearMonth, setYearMonth] = useState("");
-
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth());
 
@@ -69,9 +66,6 @@ export const CalendarPage = () => {
   useEffect(() => {
     const year = showDate.getFullYear();
     const month = showDate.getMonth();
-
-    // ヘッダー部分に年月を表示させる
-    setYearMonth(`${year}年${month + 1}月`);
 
     setYear(year);
     setMonth(month);

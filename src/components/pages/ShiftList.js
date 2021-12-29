@@ -4,7 +4,7 @@ import { useHotToast } from "../../hooks/useHotToast";
 import AppContext from "../../contexts/AppContext";
 
 import { useModal } from "react-hooks-use-modal";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { ModalRegistry } from "../molecules/ModalRegistry";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
 import { SelectBoxYearMonth } from "../atoms/select/SelectBoxYearMonth";
@@ -13,8 +13,6 @@ import { FetchLoginUserByToken, FetchShiftData } from "../../utility/MyFunc";
 import { LogoutButton } from "../atoms/button/LogoutButton";
 
 export const ShiftList = () => {
-  // カレンダーから渡された値を受け取るAPI
-  const location = useLocation();
 
   // グローバル変数を扱うAPI
   const { state, dispatch, logoutToast } = useContext(AppContext);
@@ -94,7 +92,7 @@ export const ShiftList = () => {
   return (
     <>
       <div className="container">
-        <h3 id="user_info">テストさん</h3>
+        <h3 id="user_info">{state.user.emp_name}</h3>
         <h5>申請内容一覧</h5>
         <div className="u-mt-40">
           <form>

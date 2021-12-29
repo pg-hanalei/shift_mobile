@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useState } from "react";
+import { useHotToast }  from "../../hooks/useHotToast";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
@@ -9,6 +10,8 @@ import { InputText } from "../atoms/input/InputText";
 export const Login = () => {
 
     const { dispatch } = useContext(AppContext);
+
+    const { Toaster, errorToast } = useHotToast();
 
     const history = useHistory();
 
@@ -50,9 +53,10 @@ export const Login = () => {
         })
         .catch((err)=>{
             console.log(err);
+            errorToast("ログインに失敗しました")
         })
         
-    },[dispatch, history, empid, password]);
+    },[dispatch, history, empid, password, errorToast]);
 
     
     const form = {
@@ -81,7 +85,7 @@ export const Login = () => {
                 </div>
                 <span style={{display:"block", marginTop:"12px"}}>希望の申請であり、シフトを確定するものではありません</span>
             </form>
-            
+            <Toaster />
         </div>
     );
 }
