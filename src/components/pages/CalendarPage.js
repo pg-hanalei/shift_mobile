@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState, useContext } from "react";
-import { useHotToast }  from "../../hooks/useHotToast";
 import { useModal } from "react-hooks-use-modal";
 import { useHistory } from "react-router-dom";
 import { ModalRegistry } from "../molecules/ModalRegistry";
@@ -12,7 +11,7 @@ import { LogoutButton } from "../atoms/button/LogoutButton";
 
 export const CalendarPage = () => {
   
-  const { state, dispatch, logoutToast } = useContext(AppContext)
+  const { state, dispatch, showSuccessToast, showErrorToast } = useContext(AppContext)
 
   // Fri Dec 10 2021 11:22:12 GMT+0900
   const today = useMemo(() => new Date(), []);
@@ -37,11 +36,6 @@ export const CalendarPage = () => {
   // ページ遷移などのAPI
   const history = useHistory();
 
-  // toast表示API
-  const { Toaster, successToast, errorToast} = useHotToast();
-
-  const showSuccessToast = (text) => successToast(text);
-  const showErrorToast = (text) => errorToast(text);
 
   // ページリロード対応
   useEffect(()=>{
@@ -125,13 +119,12 @@ export const CalendarPage = () => {
       <div
         style={{ width: "80%", textAlign: "center", margin: "100px auto 0px" }}
       >
-        <LogoutButton logoutToast={logoutToast} />
+        <LogoutButton />
       </div>
 
       <Modal>
-        <ModalRegistry year={year} month={month + 1} day={day} time={time} close={close}  showSuccessToast={showSuccessToast} showErrorToast={showErrorToast} />
+        <ModalRegistry year={year} month={month + 1} day={day} time={time} close={close} />
       </Modal>
-      <Toaster />
     </div>
   );
 };

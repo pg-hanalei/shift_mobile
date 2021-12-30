@@ -1,15 +1,16 @@
 import { memo, useContext, useState } from "react";
-import { PrimaryButton } from "../atoms/button/PrimaryButton";
 import AppContext from "../../contexts/AppContext";
 import axios from "axios";
+import { PrimaryButton } from "../atoms/button/PrimaryButton";
 import { FetchShiftData } from "../../utility/MyFunc";
 
 export const ModalRegistry = memo((props) => {
-  // グローバル変数を扱うAPI
-  const { state, dispatch } = useContext(AppContext);
+  
+  const { year, month, day, time, close } = props;
 
-  const { year, month, day, time, close, showSuccessToast, showErrorToast } =
-    props;
+  // グローバル変数を扱うAPI
+  const { state, dispatch, showSuccessToast, showErrorToast } = useContext(AppContext);
+
 
   // 開始時間(時)
   const [startTimeHour, setStartTimeHour] = useState(time.split(":")[0]);

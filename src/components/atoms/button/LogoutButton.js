@@ -1,14 +1,14 @@
+import { memo, useContext } from "react";
 import axios from "axios";
 import AppContext from "../../../contexts/AppContext";
-import { memo, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { DELETE_SHIFT, DELETE_USER } from "../../../actions";
 
-export const LogoutButton = memo(({ className = "", logoutToast }) => {
+export const LogoutButton = memo(({ className = "" }) => {
   const history = useHistory();
 
   // グローバル変数を扱うAPI
-  const { state, dispatch } = useContext(AppContext);
+  const { state, dispatch, showSuccessToast } = useContext(AppContext);
 
   const onClickLogout = () => {
     const data = {
@@ -35,7 +35,7 @@ export const LogoutButton = memo(({ className = "", logoutToast }) => {
         // ブラウザ側へのcookieの返却はなし
 
         // ログイン完了のtoastを出力
-        logoutToast("ログアウトしました");
+        showSuccessToast("ログアウトしました");
 
         // ログイン画面に戻す
         history.push("/");

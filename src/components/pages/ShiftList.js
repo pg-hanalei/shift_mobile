@@ -1,8 +1,5 @@
 import React, { useCallback, useEffect, useState, useContext } from "react";
-import { useHotToast } from "../../hooks/useHotToast";
-
 import AppContext from "../../contexts/AppContext";
-
 import { useModal } from "react-hooks-use-modal";
 import { useHistory } from "react-router-dom";
 import { ModalRegistry } from "../molecules/ModalRegistry";
@@ -15,7 +12,7 @@ import { LogoutButton } from "../atoms/button/LogoutButton";
 export const ShiftList = () => {
 
   // グローバル変数を扱うAPI
-  const { state, dispatch, logoutToast } = useContext(AppContext);
+  const { state, dispatch, showSuccessToast, showErrorToast } = useContext(AppContext);
 
   // モーダル表示用
   const [year, setYear] = useState(new Date().getFullYear());
@@ -35,9 +32,6 @@ export const ShiftList = () => {
     closeOnOverlayClick: false,
   });
 
-  // toast表示API
-  const { Toaster, successToast, errorToast } = useHotToast();
-
   // 検索ボタンを押したら、テーブルを出すと共に、年月を格納する
   const onClickShiftSearch = useCallback(
     (e) => {
@@ -52,9 +46,6 @@ export const ShiftList = () => {
     },
     [dispatch, state.user.empid]
   );
-
-  const showSuccessToast = (text) => successToast(text);
-  const showErrorToast = (text) => errorToast(text);
 
   useEffect(() => {
     // ページリロード対応
@@ -179,7 +170,7 @@ export const ShiftList = () => {
                 margin: "100px auto 80px",
               }}
             >
-              <LogoutButton logoutToast={logoutToast} />
+              <LogoutButton />
             </div>
       <Modal>
         <ModalRegistry
@@ -188,11 +179,8 @@ export const ShiftList = () => {
           day={day}
           time={time}
           close={close}
-          showSuccessToast={showSuccessToast}
-          showErrorToast={showErrorToast}
         />
       </Modal>
-      <Toaster />
     </>
   );
 };
