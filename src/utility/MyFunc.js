@@ -34,7 +34,7 @@ export const FetchLoginUserByToken = (state, dispatch) => {
         dispatch({
           type: DELETE_SHIFT,
         });
-        window.location = "/";
+        window.location = "/shift_mobile/";
       });
   }
 };

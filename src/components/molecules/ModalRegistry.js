@@ -191,6 +191,8 @@ export const ModalRegistry = memo((props) => {
               defaultValue={startTimeHour}
               onChange={(e) => setStartTimeHour(e.target.value)}
             >
+              <option value="06">6</option>
+              <option value="07">7</option>
               <option value="08">8</option>
               <option value="09">9</option>
               <option value="10">10</option>
@@ -237,6 +239,8 @@ export const ModalRegistry = memo((props) => {
               defaultValue={endTimeHour}
               onChange={(e) => setEndTimeHour(e.target.value)}
             >
+              <option value="06">6</option>
+              <option value="07">7</option>
               <option value="08">8</option>
               <option value="09">9</option>
               <option value="10">10</option>

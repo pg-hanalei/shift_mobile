@@ -3,7 +3,7 @@ import AppContext from "../../contexts/AppContext";
 
 export const Calendar = memo((props) => {
   const { year, month, setDay, setTime, today, open } = props;
-
+  console.log(month);
   const week = useMemo(() => {
     return ["日", "月", "火", "水", "木", "金", "土"];
   }, []);
@@ -13,12 +13,14 @@ export const Calendar = memo((props) => {
   const startDayOfWeek = new Date(year, month - 1, 1).getDay();
 
   // 当月最終日を取得
-  const endDate = new Date(year, month + 1, 0).getDate();
+  const endDate = new Date(year, month, 0).getDate();
+
   // 先月の最終日
   const lastMonthEndDate = new Date(year, month - 1, 0).getDate();
+  
   // 水曜から始まるとして3（水）＋31（日間） /7 で当月が何週あるか確認
-  // const row = Math.ceil((startDayOfWeek + endDate) / week.length);
-  const row = [1, 2, 3, 4, 5];
+  const rowWeek = Math.ceil((startDayOfWeek + endDate) / week.length);
+  const row = [...Array(rowWeek)].map((_, i) => i);
 
   const onClickRegistryModal = (e) => {
     const day = e.currentTarget.getAttribute("data-day");
