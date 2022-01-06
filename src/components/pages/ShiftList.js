@@ -41,11 +41,12 @@ export const ShiftList = () => {
       const targetYear = document.getElementById("shiftListYear").value;
       const targetMonth = document.getElementById("shiftListMonth").value;
 
+      console.log(targetYear)
+      console.log(targetMonth)
+
       setYear(targetYear);
       setMonth(targetMonth);
-    },
-    [dispatch, state.user.empid]
-  );
+    },[]);
 
   useEffect(() => {
     // ページリロード対応
@@ -90,7 +91,7 @@ export const ShiftList = () => {
             <div className="form-group">
               <label htmlFor="shiftListYear"></label>
               <SelectBoxYearMonth id="shiftListYear" tani="年" value={year}>
-                <option value={month}>{new Date().getFullYear() - 1}</option>
+                <option value={new Date().getFullYear() - 1}>{new Date().getFullYear() - 1}</option>
                 <option value={new Date().getFullYear()}>
                   {new Date().getFullYear()}
                 </option>

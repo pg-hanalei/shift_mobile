@@ -1,9 +1,11 @@
-import { useHotToast }  from "./hooks/useHotToast";
-import { HashRouter } from 'react-router-dom';
-import { Router } from './route/Router';
-import AppContext from './contexts/AppContext';
 import { useReducer } from 'react';
 import reducer from './reducers';
+import AppContext from './contexts/AppContext';
+import { HashRouter } from 'react-router-dom';
+import { Router } from './route/Router';
+import { useHotToast }  from "./hooks/useHotToast";
+
+
 
 export const App = () => {
 
