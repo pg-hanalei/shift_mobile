@@ -5,13 +5,16 @@ import { ModalRegistry } from "../molecules/ModalRegistry";
 import { Calendar } from "../molecules/Calendar";
 import { NextPrevButton } from "../atoms/button/NextPrevButton";
 import { PrimaryButton } from "../atoms/button/PrimaryButton";
-import AppContext from '../../contexts/AppContext'
+import AppContext from "../../contexts/AppContext";
 import { FetchLoginUserByToken, FetchShiftData } from "../../utility/MyFunc";
 import { LogoutButton } from "../atoms/button/LogoutButton";
+import { Spinner } from "../atoms/spinner/Spinner";
 
 export const CalendarPage = () => {
-  
-  const { state, dispatch, showSuccessToast, showErrorToast } = useContext(AppContext)
+  // スピナーの表示状態
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { state, dispatch } = useContext(AppContext);
 
   // Fri Dec 10 2021 11:22:12 GMT+0900
   const today = useMemo(() => new Date(), []);
@@ -36,22 +39,26 @@ export const CalendarPage = () => {
   // ページ遷移などのAPI
   const history = useHistory();
 
-
   // ページリロード対応
-  useEffect(()=>{
-    console.log("fetchUser")
-    FetchLoginUserByToken(state,dispatch);
-  },[])
-  
-  useEffect(()=>{
+  useEffect(() => {
+    console.log("fetchUser");
+    FetchLoginUserByToken(state, dispatch);
+  }, []);
+
+  useEffect(() => {
     console.log(month);
-    console.log("kokore")
-    FetchShiftData(state, dispatch, year, month +1)
-  },[year, month, dispatch, state.user.empid])
+    console.log("kokore");
+    FetchShiftData(state, dispatch, year, month + 1);
+  }, [year, month, dispatch, state.user.empid]);
+
+  useEffect(() => {
+    if (state.shift !== undefined) {
+      setTimeout(() => setIsLoading(false), 500);
+    }
+  }, [state]);
 
   // 初期表示
   useEffect(() => {
-
     // 月末だとずれる可能性があるため、1日固定で取得  Wed Dec 01 2021 00:00:00 GMT+0900
     setShowDate(new Date(today.getFullYear(), today.getMonth(), 1));
   }, [today]);
@@ -67,18 +74,22 @@ export const CalendarPage = () => {
 
   // 前月ボタン
   const onClickPrev = useCallback(() => {
+    setIsLoading(true);
     setShowDate((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
   }, []);
 
   // 翌月ボタン
   const onClickNext = useCallback(() => {
+    setIsLoading(true);
     setShowDate((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
   }, []);
 
   return (
     <div className="container">
       <h3 id="">{state.user.empname}</h3>
-      <h5 id="">{state.user.stoname}</h5>
+      <h5 id="" style={{ marginBottom: "28px" }}>
+        {state.user.stoname}
+      </h5>
       <h1
         id="header"
         style={{
@@ -100,30 +111,51 @@ export const CalendarPage = () => {
         </NextPrevButton>
       </div>
 
-      <Calendar
-        year={year}
-        month={month + 1}
-        today={today}
-        state={state}
-        setDay={setDay}
-        setTime={setTime}
-        open={open}
-      />
+      {isLoading && <Spinner />}
+      {isLoading || (
+        <>
+          <Calendar
+            year={year}
+            month={month + 1}
+            today={today}
+            state={state}
+            setDay={setDay}
+            setTime={setTime}
+            open={open}
+          />
 
-      <div
-        style={{ width: "80%", textAlign: "center", margin: "40px auto 0px" }}
-      >
-        <PrimaryButton onClick={() => history.push("/shift_list")}>申請内容　一覧</PrimaryButton>
-      </div>
+          <div
+            style={{
+              width: "80%",
+              textAlign: "center",
+              margin: "40px auto 0px",
+            }}
+          >
+            <PrimaryButton onClick={() => history.push("/shift_list")}>
+              申請内容　一覧
+            </PrimaryButton>
+          </div>
 
-      <div
-        style={{ width: "80%", textAlign: "center", margin: "100px auto 0px" }}
-      >
-        <LogoutButton />
-      </div>
+          <div
+            style={{
+              width: "80%",
+              textAlign: "center",
+              margin: "100px auto 0px",
+            }}
+          >
+            <LogoutButton />
+          </div>
+        </>
+      )}
 
       <Modal>
-        <ModalRegistry year={year} month={month + 1} day={day} time={time} close={close} />
+        <ModalRegistry
+          year={year}
+          month={month + 1}
+          day={day}
+          time={time}
+          close={close}
+        />
       </Modal>
     </div>
   );

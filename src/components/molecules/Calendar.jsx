@@ -2,7 +2,7 @@ import { useMemo, memo, useContext } from "react";
 import AppContext from "../../contexts/AppContext";
 
 export const Calendar = memo((props) => {
-  const { year, month, setDay, setTime, today, open } = props;
+  const { year, month, setDay, setTime, today, setIsLoading, open } = props;
   console.log(month);
   const week = useMemo(() => {
     return ["日", "月", "火", "水", "木", "金", "土"];
