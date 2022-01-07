@@ -70,7 +70,7 @@ export const Login = () => {
                 </div>
 
                 <div className="form-label-group">
-                    <InputText id="inputName" placeholder="ユーザー名を入力" value={empid} onChange={onChangeEmpid}>社員番号</InputText>
+                    <InputText id="inputName" placeholder="社員番号6ケタを入力" value={empid} onChange={onChangeEmpid}>社員番号</InputText>
                 </div>
 
                 <div className="form-label-group" style={{marginTop: "20px"}}>

@@ -55,7 +55,7 @@ export const CalendarPage = () => {
     if (state.shift !== undefined) {
       setTimeout(() => setIsLoading(false), 500);
     }
-  }, [state]);
+  }, [state, setIsLoading]);
 
   // 初期表示
   useEffect(() => {
